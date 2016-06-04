@@ -7,28 +7,33 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.rafaelanastacioalves.popularmovies.dummy.DummyContent;
-import com.example.rafaelanastacioalves.popularmovies.dummy.DummyContent.DummyItem;
 
-import java.util.List;
+import com.example.rafaelanastacioalves.popularmovies.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
- * <p />
+ * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
 public class MoviesFragment extends Fragment {
 
-    // TODO: Customize parameters
-    private int mColumnCount = 2;
-
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-
+    // TODO: Customize parameters
+    private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
+
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public MoviesFragment() {
+        setHasOptionsMenu(true);
+    }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
@@ -38,13 +43,6 @@ public class MoviesFragment extends Fragment {
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public MoviesFragment() {
     }
 
     @Override
@@ -70,21 +68,28 @@ public class MoviesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyMoviesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+//            recyclerView.setAdapter(new MyMoviesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+//        if (context instanceof OnListFragmentInteractionListener) {
+//            mListener = (OnListFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnListFragmentInteractionListener");
+//        }
     }
 
     @Override
