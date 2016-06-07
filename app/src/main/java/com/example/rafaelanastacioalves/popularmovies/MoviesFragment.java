@@ -79,6 +79,8 @@ public class MoviesFragment extends Fragment {
 
     private void updateMoviesDatabase() {
         FetchMoviesTask getMovieTask = new FetchMoviesTask();
+        ArrayList<Movie> moviesList = new ArrayList<Movie>();
+        getMovieTask.execute();
     }
 
     @Override
@@ -140,12 +142,17 @@ public class MoviesFragment extends Fragment {
         void onListFragmentInteraction(DummyItem item);
     }
 
-    private class FetchMoviesTask extends AsyncTask<Void,Void,ArrayList<Movie>> {
+    private class FetchMoviesTask extends AsyncTask<String, Void,ArrayList<Movie>> {
 
         private String LOG_TAG = this.getClass().getSimpleName();
 
         @Override
-        protected ArrayList<Movie> doInBackground(Void... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
+
+            // If there's no zip code, there's nothing to look up.  Verify size of params.
+            if (params.length == 0) {
+                return null;
+            }
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -162,16 +169,18 @@ public class MoviesFragment extends Fragment {
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
                 final String MOVIEDB_BASE_URL =
-                        "http://api.themoviedb.org/3/discover/movie";
+                        "https://api.themoviedb.org/3/discover/movie";
                 final String APPID_KEY = "api_key";
+                final String ORDERING_PARAM = "sort_by";
 
                 Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
                         .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
+                        .appendQueryParameter(ORDERING_PARAM, params[0])
                         .build();
 
                 URL url = new URL(builtUri.toString());
 
-                // Create the request to OpenWeatherMap, and open the connection
+                // Create the request to MovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
