@@ -231,7 +231,7 @@ public class MoviesFragment extends Fragment {
         protected void onPostExecute(ArrayList<Movie> aResult) {
             super.onPostExecute(aResult);
 
-            // TODO: 07/06/16 implement what to do with list 
+            // TODO: 07/06/16 implement what to do with list
 
         }
 
@@ -243,6 +243,10 @@ public class MoviesFragment extends Fragment {
             String MDBM_RESULTS = "results";
             String MDBM_POSTER_PATH = "poster_path";
             String MDBM_ID = "id";
+            String MDBM_ORIGINAL_TITLE = "original_title";
+            String MDBM_PLOT_SYNOPSIS = "overview";
+            String MDBM_VOTE_AVARAGE = "vote_average";
+
 
 
             String poster_relative_path;
