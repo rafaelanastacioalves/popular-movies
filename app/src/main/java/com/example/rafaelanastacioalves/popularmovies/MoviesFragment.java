@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.rafaelanastacioalves.popularmovies.dummy.DummyContent.DummyItem;
+import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -136,15 +140,13 @@ public class MoviesFragment extends Fragment {
         void onListFragmentInteraction(DummyItem item);
     }
 
-    private class FetchMoviesTask extends AsyncTask<String[],Void,Void> {
+    private class FetchMoviesTask extends AsyncTask<Void,Void,ArrayList<Movie>> {
 
         private String LOG_TAG = this.getClass().getSimpleName();
 
         @Override
-        protected Void doInBackground(String[]... params) {
-            if (params.length == 0){
-                return null;
-            }
+        protected ArrayList<Movie> doInBackground(Void... params) {
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -160,12 +162,10 @@ public class MoviesFragment extends Fragment {
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
                 final String MOVIEDB_BASE_URL =
-                        "http://api.themoviedb.org/3";
-                final String QUERY_PARAM = "q";
-                final String APPID_KEY = "APPID";
+                        "http://api.themoviedb.org/3/discover/movie";
+                final String APPID_KEY = "api_key";
 
                 Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
-                        .appendQueryParameter(QUERY_PARAM, params[0])
                         .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
                         .build();
 
@@ -217,7 +217,7 @@ public class MoviesFragment extends Fragment {
             }
 
             try {
-                return getMoviesDataFromJson(moviesJsonStr, numDays);
+                return getMoviesDataFromJson(moviesJsonStr);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
@@ -227,8 +227,41 @@ public class MoviesFragment extends Fragment {
             return null;
         }
 
-        private Void getMoviesDataFromJson(String moviesJsonStr, int numDays) {
-            return null;
+        @Override
+        protected void onPostExecute(ArrayList<Movie> aResult) {
+            super.onPostExecute(aResult);
+
+            // TODO: 07/06/16 implement what to do with list 
+
+        }
+
+        private ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
+            Log.d(LOG_TAG,"Parsing Movies JSON");
+
+            ArrayList<Movie> moviesList = new ArrayList<Movie>();
+
+            String MDBM_RESULTS = "results";
+            String MDBM_POSTER_PATH = "poster_path";
+            String MDBM_ID = "id";
+
+
+            String poster_relative_path;
+            String movie_id;
+
+
+            JSONObject moviesObject = new JSONObject(moviesJsonStr);
+            JSONArray moviesListArray = moviesObject.getJSONArray(MDBM_RESULTS);
+
+            for (int i = 0; i < moviesListArray.length(); i++) {
+                poster_relative_path = moviesListArray.getJSONObject(i).getString(MDBM_POSTER_PATH);
+                movie_id = moviesListArray.getJSONObject(i).getString(MDBM_ID);
+                moviesList.add(
+                        new Movie(movie_id, poster_relative_path)
+                );
+            }
+
+            return moviesList;
+
         }
     }
 }
