@@ -74,7 +74,7 @@ public class MoviesFragment extends Fragment {
     }
 
     private void updateMoviesDatabase() {
-        FetchWeatherTask getMovieTask = new FetchWeatherTask();
+        FetchMoviesTask getMovieTask = new FetchMoviesTask();
     }
 
     @Override
@@ -136,9 +136,9 @@ public class MoviesFragment extends Fragment {
         void onListFragmentInteraction(DummyItem item);
     }
 
-    private class FetchWeatherTask extends AsyncTask<String[],Void,Void> {
+    private class FetchMoviesTask extends AsyncTask<String[],Void,Void> {
 
-        private String TAG_NAME = this.getClass().getSimpleName();
+        private String LOG_TAG = this.getClass().getSimpleName();
 
         @Override
         protected Void doInBackground(String[]... params) {
@@ -160,13 +160,13 @@ public class MoviesFragment extends Fragment {
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
                 final String MOVIEDB_BASE_URL =
-                        "http://http://api.themoviedb.org/3";
+                        "http://api.themoviedb.org/3";
                 final String QUERY_PARAM = "q";
                 final String APPID_KEY = "APPID";
 
                 Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
-                        .appendQueryParameter(APPID_KEY, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
+                        .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
                         .build();
 
                 URL url = new URL(builtUri.toString());
@@ -217,13 +217,17 @@ public class MoviesFragment extends Fragment {
             }
 
             try {
-                return getWeatherDataFromJson(moviesJsonStr, numDays);
+                return getMoviesDataFromJson(moviesJsonStr, numDays);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
             }
 
             // This will only happen if there was an error getting or parsing the forecast.
+            return null;
+        }
+
+        private Void getMoviesDataFromJson(String moviesJsonStr, int numDays) {
             return null;
         }
     }
