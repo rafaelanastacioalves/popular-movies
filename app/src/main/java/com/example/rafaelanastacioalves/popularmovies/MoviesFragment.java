@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
-import com.example.rafaelanastacioalves.popularmovies.dummy.DummyContent.DummyItem;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
 import org.json.JSONArray;
@@ -40,11 +38,7 @@ import java.util.ArrayList;
  */
 public class MoviesFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 2;
-    private OnListFragmentInteractionListener mListener;
+    private CustomMoviesListAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,23 +48,11 @@ public class MoviesFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static MoviesFragment newInstance(int columnCount) {
-        MoviesFragment fragment = new MoviesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -82,8 +64,7 @@ public class MoviesFragment extends Fragment {
 
     private void updateMoviesDatabase() {
         FetchMoviesTask getMovieTask = new FetchMoviesTask();
-        ArrayList<Movie> moviesList = new ArrayList<Movie>();
-        getMovieTask.execute();
+        getMovieTask.execute("sort_by");
     }
 
     @Override
@@ -97,18 +78,22 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movies_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_movies, container, false);
+        GridView aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
 
+        ArrayList<Movie> aMovieList = new ArrayList<Movie>();
+        adapter = new CustomMoviesListAdapter(this.getContext(), aMovieList);
+        aGridView.setAdapter(adapter);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-//            recyclerView.setAdapter(new MyMoviesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+//            if (mColumnCount <= 1) {
+//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//            } else {
+//                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+//            }
+////            recyclerView.setAdapter(new MyMoviesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
     }
@@ -126,42 +111,18 @@ public class MoviesFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnListFragmentInteractionListener) {
-//            mListener = (OnListFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnListFragmentInteractionListener");
-//        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
-    }
 
     private class FetchMoviesTask extends AsyncTask<String, Void,ArrayList<Movie>> {
 
         private String LOG_TAG = this.getClass().getSimpleName();
+        private final String MOVIEDB_BASE_URL =
+                "https://api.themoviedb.org/3/discover/movie";
+        private final String IMAGETMDB_BASE_URL =
+                "http://image.tmdb.org/t/p/";
 
+        private final String image_size_default = "w185";
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
 
@@ -181,8 +142,7 @@ public class MoviesFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                final String MOVIEDB_BASE_URL =
-                        "https://api.themoviedb.org/3/discover/movie";
+
                 final String APPID_KEY = "api_key";
                 final String ORDERING_PARAM = "sort_by";
 
@@ -194,6 +154,7 @@ public class MoviesFragment extends Fragment {
 
                 URL url = new URL(builtUri.toString());
 
+                Log.d(LOG_TAG,"Accessing url: "+ url.toString() );
                 // Create the request to MovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -252,7 +213,14 @@ public class MoviesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Movie> aResult) {
-            super.onPostExecute(aResult);
+            Log.d(LOG_TAG,"onPostExecute");
+            if(aResult != null){
+                adapter.clear();
+                adapter.addAll(aResult);
+                adapter.notifyDataSetChanged();
+            }
+
+
 
             // TODO: 07/06/16 implement what to do with list
 
@@ -269,21 +237,34 @@ public class MoviesFragment extends Fragment {
             String MDBM_ORIGINAL_TITLE = "original_title";
             String MDBM_PLOT_SYNOPSIS = "overview";
             String MDBM_VOTE_AVARAGE = "vote_average";
+            String MDBM_RELEASE_DATE = "release_date";
 
 
 
-            String poster_relative_path;
             String movie_id;
 
 
             JSONObject moviesObject = new JSONObject(moviesJsonStr);
             JSONArray moviesListArray = moviesObject.getJSONArray(MDBM_RESULTS);
 
+            Movie aMovieTemp;
             for (int i = 0; i < moviesListArray.length(); i++) {
-                poster_relative_path = moviesListArray.getJSONObject(i).getString(MDBM_POSTER_PATH);
                 movie_id = moviesListArray.getJSONObject(i).getString(MDBM_ID);
+                aMovieTemp = new Movie(movie_id);
+
+                aMovieTemp.setOriginalTitle(moviesListArray.getJSONObject(i).getString(MDBM_ORIGINAL_TITLE));
+                aMovieTemp.setPlotedSynopsis(moviesListArray.getJSONObject(i).getString(MDBM_PLOT_SYNOPSIS));
+                aMovieTemp.setPosterPath(
+                        IMAGETMDB_BASE_URL +
+                        image_size_default +
+                        moviesListArray.getJSONObject(i).getString(MDBM_POSTER_PATH))
+
+                        ;
+                aMovieTemp.setUserRating(moviesListArray.getJSONObject(i).getString(MDBM_VOTE_AVARAGE));
+                aMovieTemp.setReleaseDate(moviesListArray.getJSONObject(i).getString(MDBM_RELEASE_DATE));
+
                 moviesList.add(
-                        new Movie(movie_id, poster_relative_path)
+                        aMovieTemp
                 );
             }
 
