@@ -1,13 +1,12 @@
 package com.example.rafaelanastacioalves.popularmovies;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -15,7 +14,7 @@ import android.widget.TextView;
 public class MovieDetailFragment extends Fragment {
 
 
-    private static final String TAG_NAME = this.getClass().getSimpleName();
+    private final String TAG_NAME = this.getClass().getSimpleName();
 
     public static String ORIGINAL_TITLE;
     public static String MOVIE_POSTER_URL;
@@ -33,33 +32,33 @@ public class MovieDetailFragment extends Fragment {
         Log.d(TAG_NAME,"retrieving EXTRAS");
 
         Intent intent = getActivity().getIntent();
-        if(intent!= null) {
-            if (intent.hasExtra(ORIGINAL_TITLE)) {
-                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(forecastStr);
-            }
-            if (intent.hasExtra(MOVIE_POSTER_URL)) {
-                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(forecastStr);
-            }
-            if (intent.hasExtra(PLOTED_SYNOPSIS)) {
-                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(forecastStr);
-            }
-            if (intent.hasExtra(USER_RATING)) {
-                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(forecastStr);
-            }
-            if (intent.hasExtra(RELEASE_DATE)) {
-                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(forecastStr);
-            }
-        }
+//        if(intent!= null) {
+//            if (intent.hasExtra(ORIGINAL_TITLE)) {
+//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                ((TextView) rootView.findViewById(R.id.detail_text))
+//                        .setText(forecastStr);
+//            }
+//            if (intent.hasExtra(MOVIE_POSTER_URL)) {
+//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                ((TextView) rootView.findViewById(R.id.detail_text))
+//                        .setText(forecastStr);
+//            }
+//            if (intent.hasExtra(PLOTED_SYNOPSIS)) {
+//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                ((TextView) rootView.findViewById(R.id.detail_text))
+//                        .setText(forecastStr);
+//            }
+//            if (intent.hasExtra(USER_RATING)) {
+//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                ((TextView) rootView.findViewById(R.id.detail_text))
+//                        .setText(forecastStr);
+//            }
+//            if (intent.hasExtra(RELEASE_DATE)) {
+//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                ((TextView) rootView.findViewById(R.id.detail_text))
+//                        .setText(forecastStr);
+//            }
+//        }
 
 
 
