@@ -176,9 +176,6 @@ public class MoviesFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String moviesJsonStr = null;
 
-            String format = "json";
-            String units = "metric";
-            int numDays = 7;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -191,7 +188,8 @@ public class MoviesFragment extends Fragment {
 
                 Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
                         .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
-                        .appendQueryParameter(ORDERING_PARAM, params[0])
+//                        .appendQueryParameter(ORDERING_PARAM, params[0])
+                        .appendQueryParameter(ORDERING_PARAM, "popularity.desc")
                         .build();
 
                 URL url = new URL(builtUri.toString());
