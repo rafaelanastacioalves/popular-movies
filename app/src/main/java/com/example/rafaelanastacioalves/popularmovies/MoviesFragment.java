@@ -54,13 +54,22 @@ public class MoviesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            // if there is no saved instance
+            adapter = new CustomMoviesListAdapter(this.getContext(), new ArrayList<Movie>());
+        }else {
+            adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList("movies"));
+
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        
-        updateMoviesDatabase();
+
+        if (adapter.getItems().isEmpty()){
+            updateMoviesDatabase();
+        }
     }
 
     private void updateMoviesDatabase() {
@@ -77,18 +86,28 @@ public class MoviesFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("movies", adapter.getItems());
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
         GridView aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
 
         ArrayList<Movie> aMovieList = new ArrayList<Movie>();
-        adapter = new CustomMoviesListAdapter(this.getContext(), aMovieList);
         aGridView.setAdapter(adapter);
+
         aGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie aMovie = adapter.getItem(position);
+                Intent aMovieDetailIntent = new Intent(getContext(),MovieDetail.class)
+                        .putExtra("movie",aMovie);
+                startActivity(aMovieDetailIntent);
             }
         });
         // Set the adapter
@@ -229,7 +248,6 @@ public class MoviesFragment extends Fragment {
 
 
 
-            // TODO: 07/06/16 implement what to do with list
 
         }
 

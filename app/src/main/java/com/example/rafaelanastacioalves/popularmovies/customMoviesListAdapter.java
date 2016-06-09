@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by rafael.alves on 08/06/16.
@@ -18,9 +18,11 @@ import java.util.List;
 
 public class CustomMoviesListAdapter extends ArrayAdapter<Movie> {
 
-    public CustomMoviesListAdapter(Context context, List<Movie> objects) {
+    private final ArrayList<Movie> aMovieList;
 
+    public CustomMoviesListAdapter(Context context, ArrayList<Movie> objects) {
         super(context, 0, objects);
+        aMovieList = objects;
     }
 
     @Override
@@ -33,5 +35,9 @@ public class CustomMoviesListAdapter extends ArrayAdapter<Movie> {
         ImageView aMovieItemImageView = (ImageView) convertView.findViewById(R.id.movie_list_item_image_view);
         Picasso.with(getContext()).load(aMovie.getPosterPath()).into(aMovieItemImageView);
         return convertView;
+    }
+
+    public ArrayList<Movie> getItems(){
+        return aMovieList;
     }
 }
