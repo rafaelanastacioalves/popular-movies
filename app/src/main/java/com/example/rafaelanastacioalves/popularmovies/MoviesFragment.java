@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
@@ -84,6 +85,12 @@ public class MoviesFragment extends Fragment {
         ArrayList<Movie> aMovieList = new ArrayList<Movie>();
         adapter = new CustomMoviesListAdapter(this.getContext(), aMovieList);
         aGridView.setAdapter(adapter);
+        aGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie aMovie = adapter.getItem(position);
+            }
+        });
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
