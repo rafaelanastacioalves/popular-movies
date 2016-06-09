@@ -77,4 +77,5 @@
     <string name="ordering_list_key">ordering_list</string>
     <string name="popularity_order_title_option">popularity.desc</string>
     <string name="highly_rated_title_option">vote_average.desc</string>
+    <string name="movie_detail_release_date">"Release Date: "</string>
 </resources>
