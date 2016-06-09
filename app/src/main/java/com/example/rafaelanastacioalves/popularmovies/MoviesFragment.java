@@ -122,7 +122,7 @@ public class MoviesFragment extends Fragment {
         private final String IMAGETMDB_BASE_URL =
                 "http://image.tmdb.org/t/p/";
 
-        private final String image_size_default = "w185";
+        private final String image_size_default = "w342";
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
 
