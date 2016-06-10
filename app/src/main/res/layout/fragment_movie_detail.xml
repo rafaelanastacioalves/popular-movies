@@ -11,19 +11,18 @@
     android:orientation="vertical">
 
     <ImageView
+        android:contentDescription="@string/movie_image_content_descrition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/movie_detail_image_view" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movie_detail_original_title"
         android:textSize="24sp" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movie_detail_synopsis" />
@@ -36,7 +35,6 @@
         android:stepSize="1.0" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movie_detail_release_date" />

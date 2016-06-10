@@ -22,11 +22,7 @@ public class MovieDetailFragment extends Fragment {
 
     private final String TAG_NAME = this.getClass().getSimpleName();
 
-    public static String ORIGINAL_TITLE;
-    public static String MOVIE_POSTER_URL;
-    public static String PLOTED_SYNOPSIS;
-    public static String USER_RATING;
-    public static String RELEASE_DATE;
+
 
     private Movie aMovie;
 
@@ -71,27 +67,6 @@ public class MovieDetailFragment extends Fragment {
 
 
 
-//            if (intent.hasExtra(MOVIE_POSTER_URL)) {
-//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-//                ((TextView) rootView.findViewById(R.id.detail_text))
-//                        .setText(forecastStr);
-//            }
-//            if (intent.hasExtra(PLOTED_SYNOPSIS)) {
-//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-//                ((TextView) rootView.findViewById(R.id.detail_text))
-//                        .setText(forecastStr);
-//            }
-//            if (intent.hasExtra(USER_RATING)) {
-//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-//                ((TextView) rootView.findViewById(R.id.detail_text))
-//                        .setText(forecastStr);
-//            }
-//            if (intent.hasExtra(RELEASE_DATE)) {
-//                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-//                ((TextView) rootView.findViewById(R.id.detail_text))
-//                        .setText(forecastStr);
-//            }
-//        }
 
 
 

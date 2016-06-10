@@ -96,7 +96,7 @@ public class MoviesFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if (currentSortParam != getSortParam()){
+        if (!currentSortParam.equals(getSortParam())){
             Log.d(LOG_TAG,"Preferences changed: updating");
             updateMoviesDatabase();
         }
@@ -116,7 +116,6 @@ public class MoviesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
         GridView aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
 
-        ArrayList<Movie> aMovieList = new ArrayList<Movie>();
         aGridView.setAdapter(adapter);
 
         aGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,17 +129,7 @@ public class MoviesFragment extends Fragment {
 
             }
         });
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-//            if (mColumnCount <= 1) {
-//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//            } else {
-//                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//            }
-////            recyclerView.setAdapter(new MyMoviesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+
         return view;
     }
 
@@ -157,7 +146,7 @@ public class MoviesFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getSortParam() {
+    private String getSortParam() {
         String sortParam;
 
         sortParam = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.ordering_list_key),getString(R.string.highly_rated_title_option));

@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 
 public class Movie implements Parcelable {
-    private String id;
+    private final String id;
     private String posterPath;
     private String originalTitle;
     private String plotedSynopsis;
@@ -25,7 +25,7 @@ public class Movie implements Parcelable {
         this.id=id;
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         id = in.readString();
         posterPath = in.readString();
         originalTitle = in.readString();
