@@ -175,9 +175,6 @@ public class MoviesFragment extends Fragment {
 
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
 
                 final String APPID_KEY = "api_key";
                 final String ORDERING_PARAM = "sort_by";
@@ -242,7 +239,6 @@ public class MoviesFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            // This will only happen if there was an error getting or parsing the forecast.
             return null;
         }
 
