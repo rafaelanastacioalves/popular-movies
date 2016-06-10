@@ -57,14 +57,14 @@ public class MoviesFragment extends Fragment {
         }
 
 
-            if(savedInstanceState == null || !savedInstanceState.containsKey(Constants.EXTRA_MOVIE)) {
+            if(savedInstanceState == null || !savedInstanceState.containsKey(Constants.EXTRA_MOVIE_LIST)) {
             // if there is no saved instance
             adapter = new CustomMoviesListAdapter(this.getContext(), new ArrayList<Movie>());
             updateMoviesDatabase();
         }else {
                 Log.d(LOG_TAG,"We have list of movies saved");
 
-                adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList(Constants.EXTRA_MOVIE));
+                adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList(Constants.EXTRA_MOVIE_LIST));
 
         }
     }
@@ -154,7 +154,7 @@ public class MoviesFragment extends Fragment {
 
         private String LOG_TAG = this.getClass().getSimpleName();
         private final String MOVIEDB_BASE_URL =
-                "https://api.themoviedb.org/3/discover/movie";
+                "https://api.themoviedb.org/3/movie";
         private final String IMAGETMDB_BASE_URL =
                 "http://image.tmdb.org/t/p/";
 
@@ -180,8 +180,8 @@ public class MoviesFragment extends Fragment {
                 final String ORDERING_PARAM = "sort_by";
 
                 Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                        .appendPath(params[0])
                         .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
-                        .appendQueryParameter(ORDERING_PARAM, params[0])
                         .build();
 
                 URL url = new URL(builtUri.toString());

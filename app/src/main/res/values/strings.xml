@@ -75,8 +75,8 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="settings_menu_item">Settings</string>
     <string name="ordering_list_key">ordering_list</string>
-    <string name="popularity_order_title_option">popularity.desc</string>
-    <string name="highly_rated_title_option">vote_average.desc</string>
+    <string name="popularity_order_title_option">popular</string>
+    <string name="highly_rated_title_option">top_rated</string>
     <string name="movie_detail_release_date">"Release Date: "</string>
     <string name="movie_image_content_descrition">movie image</string>
 </resources>
