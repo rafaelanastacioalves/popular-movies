@@ -3,5 +3,7 @@
     android:contentDescription="@string/movie_image_content_descrition"
     android:id="@+id/movie_list_item_image_view"
     android:layout_height="wrap_content"
+    android:scaleType="fitStart"
+    android:adjustViewBounds="true"
     android:layout_width="wrap_content">
 </ImageView>
