@@ -1,14 +1,11 @@
 package com.example.rafaelanastacioalves.popularmovies;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,12 +31,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+
 public class MoviesFragment extends Fragment {
 
     private CustomMoviesListAdapter adapter;
@@ -141,6 +133,7 @@ public class MoviesFragment extends Fragment {
         switch (item.getItemId()){
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+
                 startActivity(settingsIntent);
         }
 
