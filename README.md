@@ -1,4 +1,5 @@
 # popular-movies
 
-Please create a string on gradle.properties:
-MyMovieDBApiKey="<YOUR_API_KEY>"
+Please create the following string on gradle.properties:
+
+MyMovieDBApiKey="[YOUR_API_KEY]"
