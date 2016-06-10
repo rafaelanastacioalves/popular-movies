@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -39,8 +40,8 @@ public class MovieDetailFragment extends Fragment {
 
 
         if(intent!= null) {
-            if (intent.hasExtra("movie")) {
-                aMovie = intent.getParcelableExtra("movie");
+            if (intent.hasExtra(Constants.EXTRA_MOVIE)) {
+                aMovie = intent.getParcelableExtra(Constants.EXTRA_MOVIE);
 
             }
         }

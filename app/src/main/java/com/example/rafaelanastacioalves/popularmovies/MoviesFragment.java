@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
 import org.json.JSONArray;
@@ -57,20 +59,20 @@ public class MoviesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null && savedInstanceState.containsKey("sort")) {
+        if(savedInstanceState != null && savedInstanceState.containsKey(Constants.EXTRA_SORT)) {
             Log.d(LOG_TAG,"We have sort parameter saved");
-            currentSortParam = savedInstanceState.getString("sort");
+            currentSortParam = savedInstanceState.getString(Constants.EXTRA_SORT);
         }
 
 
-            if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            if(savedInstanceState == null || !savedInstanceState.containsKey(Constants.EXTRA_MOVIE)) {
             // if there is no saved instance
             adapter = new CustomMoviesListAdapter(this.getContext(), new ArrayList<Movie>());
             updateMoviesDatabase();
         }else {
                 Log.d(LOG_TAG,"We have list of movies saved");
 
-                adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList("movies"));
+                adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList(Constants.EXTRA_MOVIE));
 
         }
     }
@@ -104,7 +106,7 @@ public class MoviesFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", adapter.getItems());
+        outState.putParcelableArrayList(Constants.EXTRA_MOVIE_LIST, adapter.getItems());
         outState.putString("sort",currentSortParam);
         super.onSaveInstanceState(outState);
 
