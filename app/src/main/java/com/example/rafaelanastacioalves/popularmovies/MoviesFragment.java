@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
 public class MoviesFragment extends Fragment {
 
     private CustomMoviesListAdapter adapter;
+    private final String LOG_TAG = this.getClass().getSimpleName();
+    private String currentSortParam;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,27 +57,31 @@ public class MoviesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+        if(savedInstanceState != null && savedInstanceState.containsKey("sort")) {
+            Log.d(LOG_TAG,"We have sort parameter saved");
+            currentSortParam = savedInstanceState.getString("sort");
+        }
+
+
+            if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             // if there is no saved instance
             adapter = new CustomMoviesListAdapter(this.getContext(), new ArrayList<Movie>());
-        }else {
-            adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList("movies"));
-
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (adapter.getItems().isEmpty()){
             updateMoviesDatabase();
+        }else {
+                Log.d(LOG_TAG,"We have list of movies saved");
+
+                adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList("movies"));
+
         }
     }
+
+
 
     private void updateMoviesDatabase() {
         FetchMoviesTask getMovieTask = new FetchMoviesTask();
-        getMovieTask.execute("sort_by");
+        currentSortParam = getSortParam();
+        Log.d(LOG_TAG,"updateMovieDatabase with param " + getSortParam());
+        getMovieTask.execute(currentSortParam);
     }
 
     @Override
@@ -86,8 +93,19 @@ public class MoviesFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        if (currentSortParam != getSortParam()){
+            Log.d(LOG_TAG,"Preferences changed: updating");
+            updateMoviesDatabase();
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("movies", adapter.getItems());
+        outState.putString("sort",currentSortParam);
         super.onSaveInstanceState(outState);
 
     }
@@ -108,6 +126,8 @@ public class MoviesFragment extends Fragment {
                 Intent aMovieDetailIntent = new Intent(getContext(),MovieDetail.class)
                         .putExtra("movie",aMovie);
                 startActivity(aMovieDetailIntent);
+
+
             }
         });
         // Set the adapter
@@ -137,7 +157,13 @@ public class MoviesFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public String getSortParam() {
+        String sortParam;
 
+        sortParam = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.ordering_list_key),getString(R.string.highly_rated_title_option));
+
+        return sortParam;
+    }
 
 
     private class FetchMoviesTask extends AsyncTask<String, Void,ArrayList<Movie>> {
@@ -174,8 +200,7 @@ public class MoviesFragment extends Fragment {
 
                 Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
                         .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
-//                        .appendQueryParameter(ORDERING_PARAM, params[0])
-                        .appendQueryParameter(ORDERING_PARAM, "popularity.desc")
+                        .appendQueryParameter(ORDERING_PARAM, params[0])
                         .build();
 
                 URL url = new URL(builtUri.toString());
