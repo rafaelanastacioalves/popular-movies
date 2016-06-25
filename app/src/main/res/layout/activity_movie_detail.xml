@@ -12,8 +12,13 @@
 
 
 
+    <FrameLayout
+        android:id="@+id/fragment_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/content_movie_detail" />
 
-    <include layout="@layout/content_movie_detail" />
+    </FrameLayout>
 
 
 

@@ -43,27 +43,28 @@ public class MovieDetailFragment extends Fragment {
             if (intent.hasExtra(Constants.EXTRA_MOVIE)) {
                 aMovie = intent.getParcelableExtra(Constants.EXTRA_MOVIE);
 
+                ImageView aMovieDetailImageView = (ImageView) rootView.findViewById(R.id.movie_detail_image_view);
+                Picasso.with(this.getContext()).load(aMovie.getPosterPath()).into(aMovieDetailImageView);
+
+
+                TextView aMovieDetailOriginalTitleTextView = (TextView) rootView.findViewById(R.id.movie_detail_original_title);
+                aMovieDetailOriginalTitleTextView.setText(aMovie.getOriginalTitle());
+
+
+                TextView aMovieDetailReleaseDateTextView = (TextView) rootView.findViewById(R.id.movie_detail_release_date);
+                aMovieDetailReleaseDateTextView.setText(getString(R.string.movie_detail_release_date) + aMovie.getReleaseDate());
+
+
+                TextView aMovieDetailSynopsis = (TextView) rootView.findViewById(R.id.movie_detail_synopsis);
+                aMovieDetailSynopsis.setText(aMovie.getPlotedSynopsis());
+
+                RatingBar aMovieDetailRating = (RatingBar) rootView.findViewById(R.id.movie_detail_rating);
+                aMovieDetailRating.setRating(Float.valueOf(aMovie.getUserRating())/2);
+
+
             }
         }
 
-
-        ImageView aMovieDetailImageView = (ImageView) rootView.findViewById(R.id.movie_detail_image_view);
-        Picasso.with(this.getContext()).load(aMovie.getPosterPath()).into(aMovieDetailImageView);
-
-
-        TextView aMovieDetailOriginalTitleTextView = (TextView) rootView.findViewById(R.id.movie_detail_original_title);
-        aMovieDetailOriginalTitleTextView.setText(aMovie.getOriginalTitle());
-
-
-        TextView aMovieDetailReleaseDateTextView = (TextView) rootView.findViewById(R.id.movie_detail_release_date);
-        aMovieDetailReleaseDateTextView.setText(getString(R.string.movie_detail_release_date) + aMovie.getReleaseDate());
-
-
-        TextView aMovieDetailSynopsis = (TextView) rootView.findViewById(R.id.movie_detail_synopsis);
-        aMovieDetailSynopsis.setText(aMovie.getPlotedSynopsis());
-
-        RatingBar aMovieDetailRating = (RatingBar) rootView.findViewById(R.id.movie_detail_rating);
-        aMovieDetailRating.setRating(Float.valueOf(aMovie.getUserRating())/2);
 
 
 

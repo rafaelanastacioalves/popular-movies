@@ -116,9 +116,8 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie aMovie = adapter.getItem(position);
-                Intent aMovieDetailIntent = new Intent(getContext(),MovieDetail.class)
-                        .putExtra("movie",aMovie);
-                startActivity(aMovieDetailIntent);
+                ((CallBack)getActivity()).onItemSelected(aMovie);
+
 
 
             }
@@ -302,4 +301,10 @@ public class MoviesFragment extends Fragment {
 
         }
     }
+
+    public interface  CallBack {
+        public void onItemSelected(Movie aMovie);
+    }
 }
+
+
