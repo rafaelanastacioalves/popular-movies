@@ -1,6 +1,5 @@
 package com.example.rafaelanastacioalves.popularmovies;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -36,12 +35,12 @@ public class MovieDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         Log.d(TAG_NAME,"retrieving EXTRAS");
 
-        Intent intent = getActivity().getIntent();
 
+        Bundle args = getArguments();
 
-        if(intent!= null) {
-            if (intent.hasExtra(Constants.EXTRA_MOVIE)) {
-                aMovie = intent.getParcelableExtra(Constants.EXTRA_MOVIE);
+        if(getArguments() != null || !getArguments().isEmpty()) {
+            if (args.containsKey(Constants.EXTRA_MOVIE)) {
+                aMovie = args.getParcelable(Constants.EXTRA_MOVIE);
 
                 ImageView aMovieDetailImageView = (ImageView) rootView.findViewById(R.id.movie_detail_image_view);
                 Picasso.with(this.getContext()).load(aMovie.getPosterPath()).into(aMovieDetailImageView);

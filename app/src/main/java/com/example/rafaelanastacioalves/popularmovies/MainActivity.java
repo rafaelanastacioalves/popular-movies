@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
 public class MainActivity extends AppCompatActivity implements MoviesFragment.CallBack{
 
+    private final String LOG_TAG = getClass().getSimpleName() ;
     private boolean mTwoPane = false;
 
     @Override
@@ -40,7 +42,11 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
 
         if(mTwoPane){
             Fragment detailFragment = new MovieDetailFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_details_container, detailFragment);
+            Bundle args = new Bundle();
+            args.putParcelable("movie", aMovie);
+            detailFragment.setArguments(args);
+            Log.d(LOG_TAG, "Calling Detail Fragment");
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_details_container, detailFragment).commit();
 
         }else {
             Intent aMovieDetailIntent = new Intent(this,MovieDetail.class)
