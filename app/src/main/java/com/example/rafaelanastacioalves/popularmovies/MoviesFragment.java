@@ -1,11 +1,15 @@
 package com.example.rafaelanastacioalves.popularmovies;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
+import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
 import org.json.JSONArray;
@@ -32,11 +37,15 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class MoviesFragment extends Fragment {
+public class MoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private CustomMoviesListAdapter adapter;
     private final String LOG_TAG = this.getClass().getSimpleName();
     private String currentSortParam;
+    private GridView aGridView;
+
+    //TODO manage the usage:
+    private int mPosition;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -108,7 +117,7 @@ public class MoviesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
-        GridView aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
+        aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
 
         aGridView.setAdapter(adapter);
 
@@ -146,6 +155,25 @@ public class MoviesFragment extends Fragment {
         sortParam = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.ordering_list_key),getString(R.string.highly_rated_title_option));
 
         return sortParam;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_POPULAR_URI, CustomMoviesListAdapter.PROJETION, null,null, null );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
+        if (mPosition != -1){
+            aGridView.smoothScrollToPosition(mPosition);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.swapCursor(null);
+
     }
 
 
