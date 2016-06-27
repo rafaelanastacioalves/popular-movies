@@ -14,6 +14,7 @@ public class Movie implements Parcelable {
     private String plotedSynopsis;
     private String userRating;
     private String releaseDate;
+    private String popularity;
 
 
     public Movie (String id, String posterPath){
