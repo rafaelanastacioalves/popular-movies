@@ -66,16 +66,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
 
-            if(savedInstanceState == null || !savedInstanceState.containsKey(Constants.EXTRA_MOVIE_LIST)) {
-            // if there is no saved instance
-            adapter = new CustomMoviesListAdapter(this.getContext(), new ArrayList<Movie>());
-            updateMoviesDatabase();
-        }else {
-                Log.d(LOG_TAG,"We have list of movies saved");
 
-                adapter = new CustomMoviesListAdapter(this.getContext(), savedInstanceState.<Movie>getParcelableArrayList(Constants.EXTRA_MOVIE_LIST));
-
-        }
     }
 
 
@@ -117,6 +108,8 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
+
+        adapter = new CustomMoviesListAdapter(getActivity(), null, 0);
         aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
 
         aGridView.setAdapter(adapter);
@@ -124,8 +117,10 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         aGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie aMovie = adapter.getItem(position);
-                ((CallBack)getActivity()).onItemSelected(aMovie);
+
+//TODO modify clicking handling
+//                Movie aMovie = adapter.getItem(position);
+//                ((CallBack)getActivity()).onItemSelected(aMovie);
 
 
 

@@ -33,9 +33,9 @@ public class CustomMoviesListAdapter extends CursorAdapter {
             MovieContract.MovieColumns.FAVORITE
     };
 
-    public CustomMoviesListAdapter(Context context, Cursor objects) {
-        super(context, 0, objects);
-        aMovieList = objects;
+    public CustomMoviesListAdapter(Context context, Cursor c, int behavior) {
+        super(context,c, behavior );
+        aMovieList = c;
     }
 
     @Override
