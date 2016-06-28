@@ -38,6 +38,8 @@ public class CustomMoviesListAdapter extends CursorAdapter {
         aMovieList = c;
     }
 
+    public CustomMoviesListAdapter()
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie aMovie = getItem(position);

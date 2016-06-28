@@ -73,8 +73,8 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     private void updateMoviesDatabase() {
         FetchMoviesTask getMovieTask = new FetchMoviesTask();
-        currentSortParam = getSortParam();
-        Log.d(LOG_TAG,"updateMovieDatabase with param " + getSortParam());
+        currentSortParam = Utility.getSortParam(getActivity());
+        Log.d(LOG_TAG,"updateMovieDatabase with param " + Utility.getSortParam(getActivity()));
         getMovieTask.execute(currentSortParam);
     }
 
@@ -90,7 +90,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     public void onStart() {
         super.onStart();
 
-        if (!currentSortParam.equals(getSortParam())){
+        if (!currentSortParam.equals( Utility.getSortParam(getActivity()))){
             Log.d(LOG_TAG,"Preferences changed: updating");
             updateMoviesDatabase();
         }
@@ -144,13 +144,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         return super.onOptionsItemSelected(item);
     }
 
-    private String getSortParam() {
-        String sortParam;
 
-        sortParam = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getString(R.string.ordering_list_key),getString(R.string.highly_rated_title_option));
-
-        return sortParam;
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -174,14 +168,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     private class FetchMoviesTask extends AsyncTask<String, Void,ArrayList<Movie>> {
 
-        private String LOG_TAG = this.getClass().getSimpleName();
-        private final String MOVIEDB_BASE_URL =
-                "https://api.themoviedb.org/3/movie";
-        private final String IMAGETMDB_BASE_URL =
-                "http://image.tmdb.org/t/p/";
 
-        private final String image_size_default = "w342";
-        @Override
         protected ArrayList<Movie> doInBackground(String... params) {
 
             // If there's no zip code, there's nothing to look up.  Verify size of params.

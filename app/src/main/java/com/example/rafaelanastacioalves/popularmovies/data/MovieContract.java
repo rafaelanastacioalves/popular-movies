@@ -4,6 +4,7 @@ import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.DefaultValue;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
+import net.simonvt.schematic.annotation.Unique;
 
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
@@ -15,7 +16,7 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 public class MovieContract {
     public interface MovieColumns {
 
-        @DataType(INTEGER)  @PrimaryKey
+        @DataType(INTEGER)  @PrimaryKey @Unique
         String _ID = "id";
         @DataType(TEXT)  @NotNull
         String ORIGINAL_TITLE = "original_title";
@@ -23,6 +24,7 @@ public class MovieContract {
         @DataType(TEXT)  @NotNull  String POPULARITY = "popularity";
         @DataType(TEXT)  @NotNull  String USER_RATING = "movie_db_id";
         @DataType(TEXT)  @NotNull  String RELEASE_DATE = "release_date";
+        @DataType(TEXT)  @NotNull  String POSTER_PATH = "poster_path";
         @DataType(INTEGER) @NotNull @DefaultValue("0") String FAVORITE = "favorite";
 
 
