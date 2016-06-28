@@ -23,14 +23,22 @@ public final class MoviesProvider {
 
     @TableEndpoint(table = MoviesDatabase.MOVIES) public static class Movies {
         @ContentUri(
+                path = Path.MOVIE ,
+                type = "vnd.android.cursor.item/planet",
+                defaultSort = MovieContract.MovieColumns.POPULARITY + " DESC"
+        ) public static final Uri MOVIES_URI = Uri.parse("content://" + AUTHORITY + "/" + Path.MOVIE);
+
+
+
+        @ContentUri(
                 path = Path.MOVIE  + "/popular",
-                type = "vnd.android.cursor.itme/planet",
+                type = "vnd.android.cursor.item/planet",
                 defaultSort = MovieContract.MovieColumns.POPULARITY + " DESC"
         ) public static final Uri MOVIES_POPULAR_URI = Uri.parse("content://" + AUTHORITY + "/" + Path.MOVIE + "/" + Path.POPULAR);
 
         @ContentUri(
                 path = Path.MOVIE  + "/top_rated",
-                type = "vnd.android.cursor.itme/planet",
+                type = "vnd.android.cursor.item/planet",
                 defaultSort = MovieContract.MovieColumns.USER_RATING + " DESC"
         ) public static final Uri MOVIES_TOP_RATED_URI = Uri.parse("content://" + AUTHORITY + "/" + Path.MOVIE + "/" + Path.TOP_RATED);
 

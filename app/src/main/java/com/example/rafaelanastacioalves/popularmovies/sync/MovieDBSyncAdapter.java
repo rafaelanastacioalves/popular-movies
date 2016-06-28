@@ -13,6 +13,7 @@ import android.util.Log;
 import com.example.rafaelanastacioalves.popularmovies.BuildConfig;
 import com.example.rafaelanastacioalves.popularmovies.Utility;
 import com.example.rafaelanastacioalves.popularmovies.data.MovieContract;
+import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
 import org.json.JSONArray;
@@ -123,7 +124,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
         }
 
-        return null
+        return
     }
     private void getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
         Log.d(LOG_TAG,"Parsing Movies JSON");
@@ -184,12 +185,15 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 //            );
         }
 
+        Log.d(LOG_TAG,"Deleting previous data. All of it");
+        getContext().getContentResolver().delete(MoviesProvider.Movies.MOVIES_URI,null,null);
 
+        Log.d(LOG_TAG,"Inserting the new ones");
         int inserted = 0;
         if(cVVector.size()>0){
             ContentValues[] cvArray = new  ContentValues[cVVector.size()];
             cVVector.toArray(cvArray);
-            getContext().getContentResolver().bulkInsert(MovieContract., cvArray);
+            getContext().getContentResolver().bulkInsert(MoviesProvider.Movies.MOVIES_URI, cvArray);
 
 
         }
