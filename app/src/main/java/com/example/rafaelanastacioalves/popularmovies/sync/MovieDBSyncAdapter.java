@@ -1,16 +1,21 @@
 package com.example.rafaelanastacioalves.popularmovies.sync;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.rafaelanastacioalves.popularmovies.BuildConfig;
+import com.example.rafaelanastacioalves.popularmovies.R;
 import com.example.rafaelanastacioalves.popularmovies.Utility;
 import com.example.rafaelanastacioalves.popularmovies.data.MovieContract;
 import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
@@ -26,7 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -34,6 +38,8 @@ import java.util.Vector;
  */
 
 public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
+    private static final int SYNC_INTERVAL =  24 * 60 ;
+    private static final int SYNC_FLEXTIME =  SYNC_INTERVAL/3 ;
     private String LOG_TAG = this.getClass().getSimpleName();
     private final String MOVIEDB_BASE_URL =
             "https://api.themoviedb.org/3/movie";
@@ -124,7 +130,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
         }
 
-        return
+        return;
     }
     private void getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
         Log.d(LOG_TAG,"Parsing Movies JSON");
@@ -198,5 +204,53 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 
         }
 }
+    public static void initializeSyncAdapter(Context mContext){
+        getSyncAccount(mContext);
+
+    }
+
+    private static Account getSyncAccount(Context mContext) {
+        AccountManager accountManager = (AccountManager) mContext.getSystemService(Context.ACCOUNT_SERVICE);
+
+        Account newAccount = new Account(
+                mContext.getString(R.string.app_name), mContext.getString(R.string.sync_account_type));
+
+        if( accountManager.getPassword(newAccount) == null ){
+            if(!accountManager.addAccountExplicitly(newAccount,"",null)){
+                return null;
+            }
+
+            onAccountCreated(newAccount, mContext);
+        }
+
+        return newAccount;
+    }
+
+    private static void onAccountCreated(Account newAccount, Context mContext) {
+        MovieDBSyncAdapter.configurePeriodicSync(mContext, SYNC_INTERVAL, SYNC_FLEXTIME);
+        ContentResolver.setSyncAutomatically(newAccount,mContext.getString(R.string.content_authority),true);
+        syncImmediatly(mContext);
+    }
+
+    private static void configurePeriodicSync(Context mContext, int syncInterval, int syncFlextime) {
+        Account account = getSyncAccount(mContext);
+        String authority = mContext.getString(R.string.content_authority);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            SyncRequest request = new SyncRequest.Builder().
+                    syncPeriodic(syncInterval, syncFlextime).
+                    setSyncAdapter(account, authority).
+                    setExtras(new Bundle()).build();
+            ContentResolver.requestSync(request);
+        }else {
+            ContentResolver.addPeriodicSync(account,authority, new Bundle(), syncInterval);
+        }
+    }
+
+    public static void syncImmediatly(Context mContext) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        ContentResolver.requestSync(getSyncAccount(mContext), mContext.getString(R.string.content_authority),bundle);
+    }
 
 }

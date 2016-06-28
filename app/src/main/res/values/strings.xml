@@ -79,4 +79,6 @@
     <string name="highly_rated_title_option">top_rated</string>
     <string name="movie_detail_release_date">"Release Date: "</string>
     <string name="movie_image_content_descrition">movie image</string>
+    <string name="sync_account_type">popularmovies.example.com</string>
+    <string name="content_authority">com.example.rafaelanastacioalves.popularmovies</string>
 </resources>

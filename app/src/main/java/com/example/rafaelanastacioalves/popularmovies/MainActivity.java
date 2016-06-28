@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
+import com.example.rafaelanastacioalves.popularmovies.sync.MovieDBSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements MoviesFragment.CallBack{
 
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
 //                        .commit();
 //            }
         }
+
+        MovieDBSyncAdapter.initializeSyncAdapter(this);
     }
 
 
