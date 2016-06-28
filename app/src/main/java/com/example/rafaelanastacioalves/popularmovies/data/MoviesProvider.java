@@ -10,7 +10,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
  * Created by rafael.alves on 27/06/16.
  */
 
-@ContentProvider(authority = this.AUTHORITY, database = MoviesDatabase.class)
+@ContentProvider(authority = MoviesProvider.AUTHORITY , database = MoviesDatabase.class)
 public final class MoviesProvider {
     public static final String AUTHORITY = "com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider";
 

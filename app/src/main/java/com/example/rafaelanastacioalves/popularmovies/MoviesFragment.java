@@ -148,7 +148,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
-    
+
 
     public interface  CallBack {
         public void onItemSelected(Movie aMovie);
