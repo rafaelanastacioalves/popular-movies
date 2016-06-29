@@ -55,7 +55,6 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        // If there's no zip code, there's nothing to look up.  Verify size of params.
 
 
         HttpURLConnection urlConnection = null;
@@ -235,7 +234,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
     private static void configurePeriodicSync(Context mContext, int syncInterval, int syncFlextime) {
         Account account = getSyncAccount(mContext);
         String authority = mContext.getString(R.string.content_authority);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, syncFlextime).
                     setSyncAdapter(account, authority).

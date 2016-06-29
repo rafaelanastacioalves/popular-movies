@@ -32,6 +32,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     //TODO manage the usage:
     private int mPosition;
+    private static final int MOVIES_LOADER = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,7 +74,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     public void onStart() {
         super.onStart();
 
-        if (!currentSortParam.equals( Utility.getSortParam(getActivity()))){
+        if (currentSortParam == null || !currentSortParam.equals( Utility.getSortParam(getActivity()))){
             Log.d(LOG_TAG,"Preferences changed: updating");
             updateMoviesDatabase();
         }
@@ -126,6 +127,11 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(MOVIES_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
 
     @Override
