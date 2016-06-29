@@ -9,6 +9,9 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+    dexOptions {
+        incremental false
+    }
     defaultConfig {
         applicationId "com.example.rafaelanastacioalves.popularmovies"
         minSdkVersion 16
