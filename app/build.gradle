@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
     mavenCentral()
@@ -26,10 +26,20 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'MOVIE_DB_API_KEY', MyMovieDBApiKey
     }
+    apt {
+        arguments {
+            resourcePackageName android.defaultConfig.applicationId
+            androidManifestFile variant.outputs[0]?.processResources?.manifestFile
+        }
+    }
 }
 
+
+
 dependencies {
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'net.simonvt.schematic:schematic:0.6.7'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:23.4.0'
@@ -37,6 +47,5 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-vector-drawable:23.4.0'
     testCompile 'junit:junit:4.12'
-    apt 'net.simonvt.schematic:schematic-compiler:0.6.7'
-    compile 'net.simonvt.schematic:schematic:0.6.7'
+
 }

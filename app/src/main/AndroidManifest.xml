@@ -36,6 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.rafaelanastacioalves.popularmovies.MainActivity" />
         </activity>
+        <!--<provider-->
+            <!--android:authorities="@string/content_authority"-->
+            <!--&lt;!&ndash;android:name=".data.MoviesProvider"&ndash;&gt;-->
+            <!--android:exported="false"-->
+            <!--android:syncable="true"/>-->
+        <service android:name=".sync.MovieDBAuthenthicatorService">
+            <inte
+        </service>
     </application>
 
 </manifest>
