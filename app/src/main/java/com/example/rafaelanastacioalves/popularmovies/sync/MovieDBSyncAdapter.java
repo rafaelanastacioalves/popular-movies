@@ -17,7 +17,7 @@ import android.util.Log;
 import com.example.rafaelanastacioalves.popularmovies.BuildConfig;
 import com.example.rafaelanastacioalves.popularmovies.R;
 import com.example.rafaelanastacioalves.popularmovies.Utility;
-import com.example.rafaelanastacioalves.popularmovies.data.MovieContract;
+import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
 import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 
@@ -159,16 +159,16 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
         for (int i = 0; i < moviesListArray.length(); i++) {
             ContentValues movieValues = new ContentValues();
 
-            movieValues.put(MovieContract.MovieColumns._ID,MDBM_ID);
-            movieValues.put(MovieContract.MovieColumns.ORIGINAL_TITLE,MDBM_ORIGINAL_TITLE);
-            movieValues.put(MovieContract.MovieColumns.PLOTED_SYNOPSIS,MDBM_PLOT_SYNOPSIS);
+            movieValues.put(MovieColumns._ID,MDBM_ID);
+            movieValues.put(MovieColumns.ORIGINAL_TITLE,MDBM_ORIGINAL_TITLE);
+            movieValues.put(MovieColumns.PLOTED_SYNOPSIS,MDBM_PLOT_SYNOPSIS);
             //TODO refatorar essa concatenação
-            movieValues.put(MovieContract.MovieColumns.POSTER_PATH,IMAGETMDB_BASE_URL +
+            movieValues.put(MovieColumns.POSTER_PATH,IMAGETMDB_BASE_URL +
                                                                 image_size_default +
                                                                 moviesListArray.getJSONObject(i).getString(MDBM_POSTER_PATH));
-            movieValues.put(MovieContract.MovieColumns.USER_RATING,MDBM_VOTE_AVARAGE);
-            movieValues.put(MovieContract.MovieColumns.POPULARITY,MDBM_POPULARITY);
-            movieValues.put(MovieContract.MovieColumns.RELEASE_DATE,MDBM_RELEASE_DATE);
+            movieValues.put(MovieColumns.USER_RATING,MDBM_VOTE_AVARAGE);
+            movieValues.put(MovieColumns.POPULARITY,MDBM_POPULARITY);
+            movieValues.put(MovieColumns.RELEASE_DATE,MDBM_RELEASE_DATE);
             cVVector.add(movieValues);
 
             //TODO remover esse código

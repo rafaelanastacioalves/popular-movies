@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 
+import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
 import com.example.rafaelanastacioalves.popularmovies.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
@@ -20,14 +21,14 @@ public class CustomMoviesListAdapter extends CursorAdapter {
     private final Cursor aMovieList;
 
     public static final String[] PROJETION = new String[] {
-            MovieContract.MovieColumns._ID,
-            MovieContract.MovieColumns.ORIGINAL_TITLE,
-            MovieContract.MovieColumns.PLOTED_SYNOPSIS,
-            MovieContract.MovieColumns.RELEASE_DATE,
-            MovieContract.MovieColumns.POPULARITY,
-            MovieContract.MovieColumns.USER_RATING,
-            MovieContract.MovieColumns.FAVORITE,
-            MovieContract.MovieColumns.POSTER_PATH
+            MovieColumns._ID,
+            MovieColumns.ORIGINAL_TITLE,
+            MovieColumns.PLOTED_SYNOPSIS,
+            MovieColumns.RELEASE_DATE,
+            MovieColumns.POPULARITY,
+            MovieColumns.USER_RATING,
+            MovieColumns.FAVORITE,
+            MovieColumns.POSTER_PATH
 
     };
 

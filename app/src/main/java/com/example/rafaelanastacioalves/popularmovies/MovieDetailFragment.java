@@ -43,7 +43,7 @@ public class MovieDetailFragment extends Fragment {
                 aMovie = args.getParcelable(Constants.EXTRA_MOVIE);
 
                 ImageView aMovieDetailImageView = (ImageView) rootView.findViewById(R.id.movie_detail_image_view);
-                Picasso.with(this.getContext()).load(aMovie.getPosterPath()).into(aMovieDetailImageView);
+                Picasso.with(getActivity().getApplicationContext()).load(aMovie.getPosterPath()).into(aMovieDetailImageView);
 
 
                 TextView aMovieDetailOriginalTitleTextView = (TextView) rootView.findViewById(R.id.movie_detail_original_title);

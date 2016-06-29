@@ -36,13 +36,35 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.rafaelanastacioalves.popularmovies.MainActivity" />
         </activity>
-        <!--<provider-->
-            <!--android:authorities="@string/content_authority"-->
-            <!--&lt;!&ndash;android:name=".data.MoviesProvider"&ndash;&gt;-->
-            <!--android:exported="false"-->
-            <!--android:syncable="true"/>-->
+
+        <provider
+            android:authorities="com.example.rafaelanastacioalves.popularmovies.data"
+            android:name="com.example.rafaelanastacioalves.popularmovies.data.generated.MoviesProvider"
+            android:exported="false"
+            android:syncable="true"/>
+
+
         <service android:name=".sync.MovieDBAuthenthicatorService">
-            <inte
+            <intent-filter>
+                <action android:name="android.accounts.Authenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"
+                />
+        </service>
+
+        <service android:name=".sync.MovieDBSyncService"
+            android:exported="true"
+            >
+
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter"
+                />
         </service>
     </application>
 
