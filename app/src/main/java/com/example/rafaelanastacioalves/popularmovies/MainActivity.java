@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
 //            }
         }
 
+        Log.i(LOG_TAG, "Initializing adapter");
         MovieDBSyncAdapter.initializeSyncAdapter(this);
     }
 

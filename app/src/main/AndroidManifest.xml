@@ -39,8 +39,8 @@
         </activity>
 
         <provider
-            android:authorities="com.example.rafaelanastacioalves.popularmovies.data"
-            android:name="com.example.rafaelanastacioalves.popularmovies.data.generated.MoviesProvider"
+            android:authorities="com.example.rafaelanastacioalves.popularmovies"
+                   android:name=".data.generated.MoviesProvider"
             android:exported="false"
             android:syncable="true"/>
 

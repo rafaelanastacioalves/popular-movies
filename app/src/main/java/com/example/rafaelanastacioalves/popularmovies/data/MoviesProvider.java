@@ -31,11 +31,10 @@ public final class MoviesProvider {
     }
 
 
-    @TableEndpoint(table = MoviesDatabase.MOVIES) public static class Movies {
+    @TableEndpoint(table = MoviesDatabase.MOVIES_TABLE) public static class Movies {
         @ContentUri(
                 path = Path.MOVIE ,
-                type = "vnd.android.cursor.dir/movie",
-                defaultSort = MovieColumns.POPULARITY + " DESC")
+                type = "vnd.android.cursor.dir/movie")
         public static final Uri MOVIES_URI = buildUri(Path.MOVIE);
 
 

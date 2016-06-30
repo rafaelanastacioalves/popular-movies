@@ -9,7 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 
 import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
-import com.example.rafaelanastacioalves.popularmovies.data.MovieContract;
+import com.example.rafaelanastacioalves.popularmovies.data.MoviesDatabase;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -20,26 +20,14 @@ public class CustomMoviesListAdapter extends CursorAdapter {
 
     private final Cursor aMovieList;
 
-    public static final String[] PROJETION = new String[] {
-            MovieColumns._ID,
-            MovieColumns.ORIGINAL_TITLE,
-            MovieColumns.PLOTED_SYNOPSIS,
-            MovieColumns.RELEASE_DATE,
-            MovieColumns.POPULARITY,
-            MovieColumns.USER_RATING,
-            MovieColumns.FAVORITE,
+    public static final String[] PROJETION =  {
+            MoviesDatabase.MOVIES_TABLE+"."+MovieColumns._ID,
             MovieColumns.POSTER_PATH
 
     };
 
     static final int _ID_COL = 0;
-    static final int ORIGINAL_TITLE_COL = 1;
-    static final int PLOTED_SYNOPSIS_COL = 2;
-    static final int RELEASE_DATE_COL = 3;
-    static final int POPULARITY_COL = 4;
-    static final int USER_RATING_COL = 5;
-    static final int FAVORITE_COL = 6;
-    static final int POSTER_PATH_COL = 7;
+    static final int POSTER_PATH_COL = 1;
 
 
 

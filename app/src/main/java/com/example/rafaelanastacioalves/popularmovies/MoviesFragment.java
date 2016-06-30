@@ -129,6 +129,12 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+//        Cursor c = getActivity().getContentResolver().query(MoviesProvider.Movies.MOVIES_URI,
+//                null, null, null, null);
+//        Log.i(LOG_TAG, "cursor count: " + c.getCount());
+//        if (c == null || c.getCount() == 0){
+//            Log.i(LOG_TAG, "No data...");
+//        }
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
@@ -136,7 +142,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_POPULAR_URI, CustomMoviesListAdapter.PROJETION, null,null, null );
+        return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_URI, null, null,null, null );
     }
 
     @Override
