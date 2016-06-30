@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -158,16 +159,16 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
         for (int i = 0; i < moviesListArray.length(); i++) {
             ContentValues movieValues = new ContentValues();
 
-            movieValues.put(MovieColumns._ID,MDBM_ID);
-            movieValues.put(MovieColumns.ORIGINAL_TITLE,MDBM_ORIGINAL_TITLE);
-            movieValues.put(MovieColumns.PLOTED_SYNOPSIS,MDBM_PLOT_SYNOPSIS);
+            movieValues.put(MovieColumns._ID,moviesListArray.getJSONObject(i).getString(MDBM_ID));
+            movieValues.put(MovieColumns.ORIGINAL_TITLE,moviesListArray.getJSONObject(i).getString(MDBM_ORIGINAL_TITLE));
+            movieValues.put(MovieColumns.PLOTED_SYNOPSIS,moviesListArray.getJSONObject(i).getString(MDBM_PLOT_SYNOPSIS));
             //TODO refatorar essa concatenação
             movieValues.put(MovieColumns.POSTER_PATH,IMAGETMDB_BASE_URL +
                                                                 image_size_default +
                                                                 moviesListArray.getJSONObject(i).getString(MDBM_POSTER_PATH));
-            movieValues.put(MovieColumns.USER_RATING,MDBM_VOTE_AVARAGE);
-            movieValues.put(MovieColumns.POPULARITY,MDBM_POPULARITY);
-            movieValues.put(MovieColumns.RELEASE_DATE,MDBM_RELEASE_DATE);
+            movieValues.put(MovieColumns.VOTE_AVERAGE,moviesListArray.getJSONObject(i).getString(MDBM_VOTE_AVARAGE));
+            movieValues.put(MovieColumns.POPULARITY,moviesListArray.getJSONObject(i).getString(MDBM_POPULARITY));
+            movieValues.put(MovieColumns.RELEASE_DATE,moviesListArray.getJSONObject(i).getString(MDBM_RELEASE_DATE));
             cVVector.add(movieValues);
 
             //TODO remover esse código
@@ -190,8 +191,12 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 //            );
         }
 
-        Log.d(LOG_TAG,"Deleting previous data. All of it");
-        getContext().getContentResolver().delete(MoviesProvider.Movies.MOVIES_URI,null,null);
+        Cursor c = getContext().getContentResolver().query(MoviesProvider.Movies.MOVIES_URI,null,null,null,null);
+        if(c !=null ){
+            Log.d(LOG_TAG,"Deleting previous data. All of it");
+
+            getContext().getContentResolver().delete(MoviesProvider.Movies.MOVIES_URI,null,null);
+        }
 
         Log.d(LOG_TAG,"Inserting the new ones");
         int inserted = 0;

@@ -12,7 +12,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 
 @ContentProvider(authority = MoviesProvider.AUTHORITY , database = MoviesDatabase.class)
 public final class MoviesProvider {
-    public static final String AUTHORITY = "com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider";
+    public static final String AUTHORITY = "com.example.rafaelanastacioalves.popularmovies8";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     interface Path{
@@ -46,7 +46,7 @@ public final class MoviesProvider {
         @ContentUri(
                 path = Path.MOVIE  + "/top_rated",
                 type = "vnd.android.cursor.dir/movie",
-                defaultSort = MovieColumns.USER_RATING + " DESC"
+                defaultSort = MovieColumns.VOTE_AVERAGE + " DESC"
         ) public static final Uri MOVIES_TOP_RATED_URI = buildUri(Path.MOVIE,Path.TOP_RATED);
     }
 

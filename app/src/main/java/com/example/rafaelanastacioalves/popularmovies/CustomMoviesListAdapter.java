@@ -22,12 +22,24 @@ public class CustomMoviesListAdapter extends CursorAdapter {
 
     public static final String[] PROJETION =  {
             MoviesDatabase.MOVIES_TABLE+"."+MovieColumns._ID,
+            MovieColumns.ORIGINAL_TITLE,
+            MovieColumns.PLOTED_SYNOPSIS,
+            MovieColumns.RELEASE_DATE,
+            MovieColumns.POPULARITY,
+            MovieColumns.VOTE_AVERAGE,
+            MovieColumns.FAVORITE,
             MovieColumns.POSTER_PATH
 
     };
 
     static final int _ID_COL = 0;
-    static final int POSTER_PATH_COL = 1;
+    static final int ORIGINAL_TITLE_COL = 1;
+    static final int PLOTED_SYNOPSIS_COL = 2;
+    static final int RELEASE_DATE_COL = 3;
+    static final int POPULARITY_COL = 4;
+    static final int VOTE_AVERAGE_COL = 5;
+    static final int FAVORITE_COL = 6;
+    static final int POSTER_PATH_COL = 7;
 
 
 
