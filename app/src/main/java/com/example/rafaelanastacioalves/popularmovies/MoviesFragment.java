@@ -54,6 +54,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
 
 
+
     }
 
 
@@ -73,11 +74,13 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onStart() {
         super.onStart();
-
         if (currentSortParam == null || !currentSortParam.equals( Utility.getSortParam(getActivity()))){
             Log.d(LOG_TAG,"Preferences changed: updating");
+            currentSortParam = Utility.getSortParam(getActivity());
             updateMoviesDatabase();
         }
+
+
     }
 
     @Override
@@ -142,7 +145,15 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_URI, null, null,null, null );
+        if(currentSortParam.equals(getString(R.string.highly_rated_title_option))){
+            Log.i(LOG_TAG,"Cursor Loader --> Top Rated");
+            return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_TOP_RATED_URI, null, null,null, null );
+
+        }else if(currentSortParam.equals(getString(R.string.popularity_order_title_option))){
+            Log.i(LOG_TAG,"Cursor Loader --> Popular");
+            return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_POPULAR_URI, null, null,null, null );
+        }
+        return null;
     }
 
     @Override

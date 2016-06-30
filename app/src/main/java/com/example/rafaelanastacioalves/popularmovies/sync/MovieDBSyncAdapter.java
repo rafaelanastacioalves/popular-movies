@@ -207,6 +207,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 
 
         }
+        c.close();
 }
     public static void initializeSyncAdapter(Context mContext){
         getSyncAccount(mContext);

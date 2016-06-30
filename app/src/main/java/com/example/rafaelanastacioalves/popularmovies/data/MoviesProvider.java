@@ -12,7 +12,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 
 @ContentProvider(authority = MoviesProvider.AUTHORITY , database = MoviesDatabase.class)
 public final class MoviesProvider {
-    public static final String AUTHORITY = "com.example.rafaelanastacioalves.popularmovies8";
+    public static final String AUTHORITY = "com.example.rafaelanastacioalves.popularmovies";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     interface Path{
