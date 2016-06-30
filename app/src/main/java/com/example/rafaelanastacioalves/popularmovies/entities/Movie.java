@@ -1,7 +1,10 @@
 package com.example.rafaelanastacioalves.popularmovies.entities;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
 
 /**
  * Created by rafael.alves on 07/06/16.
@@ -12,7 +15,7 @@ public class Movie implements Parcelable {
     private String posterPath;
     private String originalTitle;
     private String plotedSynopsis;
-    private String userRating;
+    private String voteAverage;
     private String releaseDate;
     private String popularity;
 
@@ -31,8 +34,9 @@ public class Movie implements Parcelable {
         posterPath = in.readString();
         originalTitle = in.readString();
         plotedSynopsis = in.readString();
-        userRating = in.readString();
+        voteAverage = in.readString();
         releaseDate = in.readString();
+        popularity = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -47,6 +51,16 @@ public class Movie implements Parcelable {
         }
     };
 
+    public Movie(Cursor c) {
+        this.id=
+        this.posterPath = c.getString(c.getColumnIndex(MovieColumns.POSTER_PATH)) ;
+        this.originalTitle = c.getString(c.getColumnIndex(MovieColumns.ORIGINAL_TITLE)) ;
+        this.plotedSynopsis = c.getString(c.getColumnIndex(MovieColumns.PLOTED_SYNOPSIS));
+        this.voteAverage = c.getString(c.getColumnIndex(MovieColumns.VOTE_AVERAGE));
+        this.releaseDate = c.getString(c.getColumnIndex(MovieColumns.RELEASE_DATE));
+        this.popularity = c.getString(c.getColumnIndex(MovieColumns.POPULARITY));
+
+    }
 
 
     public String getPosterPath() {
@@ -73,12 +87,12 @@ public class Movie implements Parcelable {
         this.plotedSynopsis = plotedSynopsis;
     }
 
-    public String getUserRating() {
-        return userRating;
+    public String getVoteAverage() {
+        return voteAverage;
     }
 
-    public void setUserRating(String userRating) {
-        this.userRating = userRating;
+    public void setVoteAverage(String voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
     public String getReleaseDate() {
@@ -100,8 +114,9 @@ public class Movie implements Parcelable {
         dest.writeString(posterPath);
         dest.writeString(originalTitle);
         dest.writeString(plotedSynopsis);
-        dest.writeString(userRating);
+        dest.writeString(voteAverage);
         dest.writeString(releaseDate);
+        dest.writeString(popularity);
 
     }
 }

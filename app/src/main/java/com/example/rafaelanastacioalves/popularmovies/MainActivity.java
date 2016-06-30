@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 import com.example.rafaelanastacioalves.popularmovies.sync.MovieDBSyncAdapter;
 
@@ -54,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
 
         }else {
             Intent aMovieDetailIntent = new Intent(this,MovieDetail.class)
-                    .putExtra("movie",aMovie);
+                    .putExtra(Constants.EXTRA_MOVIE,aMovie);
             startActivity(aMovieDetailIntent);
+
         }
 
     }

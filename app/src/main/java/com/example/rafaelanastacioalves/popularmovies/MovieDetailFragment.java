@@ -38,7 +38,7 @@ public class MovieDetailFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        if(getArguments() != null || !getArguments().isEmpty()) {
+        if(args!= null && !args.isEmpty()) {
             if (args.containsKey(Constants.EXTRA_MOVIE)) {
                 aMovie = args.getParcelable(Constants.EXTRA_MOVIE);
 
@@ -58,7 +58,7 @@ public class MovieDetailFragment extends Fragment {
                 aMovieDetailSynopsis.setText(aMovie.getPlotedSynopsis());
 
                 RatingBar aMovieDetailRating = (RatingBar) rootView.findViewById(R.id.movie_detail_rating);
-                aMovieDetailRating.setRating(Float.valueOf(aMovie.getUserRating())/2);
+                aMovieDetailRating.setRating(Float.valueOf(aMovie.getVoteAverage())/2);
 
 
             }

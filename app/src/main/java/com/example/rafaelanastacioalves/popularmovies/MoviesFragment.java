@@ -74,11 +74,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onStart() {
         super.onStart();
-        if (currentSortParam == null || !currentSortParam.equals( Utility.getSortParam(getActivity()))){
-            Log.d(LOG_TAG,"Preferences changed: updating");
-            currentSortParam = Utility.getSortParam(getActivity());
-            updateMoviesDatabase();
-        }
+
 
 
     }
@@ -102,11 +98,11 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
         aGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-//TODO modify clicking handling
-//                Movie aMovie = adapter.getItem(position);
-//                ((CallBack)getActivity()).onItemSelected(aMovie);
+                Cursor c = (Cursor) adapterView.getItemAtPosition(position);
+                Movie aMovie = new Movie(c);
+                ((CallBack)getActivity()).onItemSelected(aMovie);
 
 
 
@@ -132,12 +128,12 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-//        Cursor c = getActivity().getContentResolver().query(MoviesProvider.Movies.MOVIES_URI,
-//                null, null, null, null);
-//        Log.i(LOG_TAG, "cursor count: " + c.getCount());
-//        if (c == null || c.getCount() == 0){
-//            Log.i(LOG_TAG, "No data...");
-//        }
+        if (currentSortParam == null || !currentSortParam.equals( Utility.getSortParam(getActivity()))){
+            Log.d(LOG_TAG,"Preferences changed: updating");
+            currentSortParam = Utility.getSortParam(getActivity());
+            updateMoviesDatabase();
+        }
+
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }

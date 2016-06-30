@@ -183,7 +183,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 //                            moviesListArray.getJSONObject(i).getString(MDBM_POSTER_PATH))
 //
 //            ;
-//            aMovieTemp.setUserRating(moviesListArray.getJSONObject(i).getString(MDBM_VOTE_AVARAGE));
+//            aMovieTemp.setVoteAverage(moviesListArray.getJSONObject(i).getString(MDBM_VOTE_AVARAGE));
 //            aMovieTemp.setReleaseDate(moviesListArray.getJSONObject(i).getString(MDBM_RELEASE_DATE));
 //
 //            moviesList.add(
