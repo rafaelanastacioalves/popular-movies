@@ -12,8 +12,11 @@ import com.example.rafaelanastacioalves.popularmovies.sync.MovieDBSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements MoviesFragment.CallBack{
 
+    private String currentSortParam;
+
     private final String LOG_TAG = getClass().getSimpleName() ;
     private boolean mTwoPane = false;
+    private final static String MOVIE_FRAGMENT_TAG = "MFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +27,13 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
             mTwoPane = true;
         }
 
-
+        if(savedInstanceState != null && savedInstanceState.containsKey(Constants.EXTRA_SORT)) {
+            Log.d(LOG_TAG,"We have sort parameter saved");
+            currentSortParam = savedInstanceState.getString(Constants.EXTRA_SORT);
+        }
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.movie_list_fragment_container, new MoviesFragment())
+                    .add(R.id.movie_list_fragment_container, new MoviesFragment(), MOVIE_FRAGMENT_TAG)
                     .commit();
 
             // adding details fragment for the first time if two pane
@@ -41,6 +47,20 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
         MovieDBSyncAdapter.initializeSyncAdapter(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (currentSortParam == null || !currentSortParam.equals( Utility.getSortParam(this))){
+            Log.d(LOG_TAG,"Preferences changed: updating");
+            MoviesFragment mf = (MoviesFragment) getSupportFragmentManager().findFragmentByTag(MOVIE_FRAGMENT_TAG);
+            currentSortParam = Utility.getSortParam(this);
+            if(mf != null){
+                mf.updateMoviesDatabase();
+
+            }
+        }
+    }
 
     @Override
     public void onItemSelected(Movie aMovie) {

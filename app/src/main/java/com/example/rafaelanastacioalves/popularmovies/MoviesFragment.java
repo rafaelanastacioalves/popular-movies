@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
 import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 import com.example.rafaelanastacioalves.popularmovies.sync.MovieDBSyncAdapter;
@@ -27,7 +26,6 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     private CustomMoviesListAdapter adapter;
     private final String LOG_TAG = this.getClass().getSimpleName();
-    private String currentSortParam;
     private GridView aGridView;
 
     //TODO manage the usage:
@@ -47,10 +45,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(Constants.EXTRA_SORT)) {
-            Log.d(LOG_TAG,"We have sort parameter saved");
-            currentSortParam = savedInstanceState.getString(Constants.EXTRA_SORT);
-        }
+
 
 
 
@@ -59,7 +54,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
 
 
-    private void updateMoviesDatabase() {
+    public void updateMoviesDatabase() {
         MovieDBSyncAdapter.syncImmediatly(getActivity());
     }
 
@@ -71,17 +66,10 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sort",currentSortParam);
+        outState.putString("sort",Utility.getSortParam(getActivity()));
         super.onSaveInstanceState(outState);
 
     }
@@ -128,11 +116,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (currentSortParam == null || !currentSortParam.equals( Utility.getSortParam(getActivity()))){
-            Log.d(LOG_TAG,"Preferences changed: updating");
-            currentSortParam = Utility.getSortParam(getActivity());
-            updateMoviesDatabase();
-        }
+
 
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
@@ -141,11 +125,13 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if(currentSortParam.equals(getString(R.string.highly_rated_title_option))){
+        Log.i(LOG_TAG, "onCreateLoader");
+
+        if(Utility.getSortParam(getActivity()).equals(getString(R.string.highly_rated_title_option))){
             Log.i(LOG_TAG,"Cursor Loader --> Top Rated");
             return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_TOP_RATED_URI, null, null,null, null );
 
-        }else if(currentSortParam.equals(getString(R.string.popularity_order_title_option))){
+        }else if(Utility.getSortParam(getActivity()).equals(getString(R.string.popularity_order_title_option))){
             Log.i(LOG_TAG,"Cursor Loader --> Popular");
             return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_POPULAR_URI, null, null,null, null );
         }
