@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements  {
 
 
     private final String TAG_NAME = this.getClass().getSimpleName();
@@ -32,7 +32,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        View rootView = inflater.inflate(R.layout.movie_detail_content, container, false);
         Log.d(TAG_NAME,"retrieving EXTRAS");
 
 
@@ -74,7 +74,15 @@ public class MovieDetailFragment extends Fragment {
         return rootView;
     }
 
+    private void setFavorite(){
+        aMovie.setFavorite(true);
+        //TODO persist change:
+        //Have to create a URI referencing the ID of the movie and set it to the value we want. Update value...
+    }
 
+    public interface Callback {
+        public void onSetFavorite(Movie aMovie);
+    }
 
 
 

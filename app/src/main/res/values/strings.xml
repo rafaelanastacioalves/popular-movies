@@ -81,4 +81,5 @@
     <string name="movie_image_content_descrition">movie image</string>
     <string name="sync_account_type">popularmovies.example.com</string>
     <string name="content_authority">com.example.rafaelanastacioalves.popularmovies</string>
+    <string name="mark_as_favorite">Mark as Favorite</string>
 </resources>

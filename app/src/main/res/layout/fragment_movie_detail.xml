@@ -1,47 +1,9 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_movie_details"
+    android:name="com.example.rafaelanastacioalves.popularmovies.MovieDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.rafaelanastacioalves.popularmovies.MovieDetailFragment"
-    tools:showIn="@layout/activity_movie_detail"
-    android:orientation="vertical">
-
-        <ImageView
-            android:contentDescription="@string/movie_image_content_descrition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/movie_detail_image_view" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/movie_detail_original_title"
-            android:textSize="24sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/movie_detail_synopsis" />
-
-        <android.support.v7.widget.AppCompatRatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/movie_detail_rating"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:stepSize="1.0" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/movie_detail_release_date" />
-</LinearLayout>
-</ScrollView>
-
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:layout="@layout/movie_detail_content" />
