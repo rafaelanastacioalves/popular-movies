@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
+import net.simonvt.schematic.annotation.InexactContentUri;
 import net.simonvt.schematic.annotation.TableEndpoint;
 
 /**
@@ -14,6 +15,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 public final class MoviesProvider {
     public static final String AUTHORITY = "com.example.rafaelanastacioalves.popularmovies";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
 
     interface Path{
          String MOVIE = "movie";
@@ -38,6 +40,7 @@ public final class MoviesProvider {
         public static final Uri MOVIES_URI = buildUri(Path.MOVIE);
 
 
+
         @ContentUri(
                 path = Path.MOVIE  + "/popular",
                 type = "vnd.android.cursor.dir/movie",
@@ -48,6 +51,20 @@ public final class MoviesProvider {
                 type = "vnd.android.cursor.dir/movie",
                 defaultSort = MovieColumns.VOTE_AVERAGE + " DESC"
         ) public static final Uri MOVIES_TOP_RATED_URI = buildUri(Path.MOVIE,Path.TOP_RATED);
+
+        @InexactContentUri(
+                name = "MOVIE_ID",
+                path = Path.MOVIE+"/#" ,
+                whereColumn = MovieColumns._ID,
+                pathSegment = 1,
+                type = "vnd.android.cursor.item/movie")
+        public static Uri withId(long id) {
+            return buildUri(Path.MOVIE, String.valueOf(id));
+        }
+
+
     }
+
+
 
 }

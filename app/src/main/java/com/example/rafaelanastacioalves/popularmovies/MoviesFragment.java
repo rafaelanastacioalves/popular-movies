@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
 import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 import com.example.rafaelanastacioalves.popularmovies.sync.MovieDBSyncAdapter;
@@ -30,7 +31,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     //TODO manage the usage:
     private int mPosition;
-    private static final int MOVIES_LOADER = 0;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,6 +57,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     public void updateMoviesDatabase() {
         MovieDBSyncAdapter.syncImmediatly(getActivity());
+        getLoaderManager().restartLoader(Constants.MOVIES_LOADER,null,this);
     }
 
     @Override
@@ -118,7 +120,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     public void onActivityCreated(Bundle savedInstanceState) {
 
 
-        getLoaderManager().initLoader(MOVIES_LOADER, null, this);
+        getLoaderManager().initLoader(Constants.MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 

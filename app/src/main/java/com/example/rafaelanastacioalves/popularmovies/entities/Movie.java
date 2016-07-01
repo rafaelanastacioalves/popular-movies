@@ -11,13 +11,14 @@ import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
  */
 
 public class Movie implements Parcelable {
-    private final String id;
+    private String  id;
     private String posterPath;
     private String originalTitle;
     private String plotedSynopsis;
     private String voteAverage;
     private String releaseDate;
     private String popularity;
+    private boolean favorite;
 
 
     public Movie (String id, String posterPath){
@@ -37,6 +38,7 @@ public class Movie implements Parcelable {
         voteAverage = in.readString();
         releaseDate = in.readString();
         popularity = in.readString();
+        favorite = in.readInt() == 1 ? true : false;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -52,13 +54,14 @@ public class Movie implements Parcelable {
     };
 
     public Movie(Cursor c) {
-        this.id=
+        this.id= c.getString(c.getColumnIndex(MovieColumns._ID)) ;
         this.posterPath = c.getString(c.getColumnIndex(MovieColumns.POSTER_PATH)) ;
         this.originalTitle = c.getString(c.getColumnIndex(MovieColumns.ORIGINAL_TITLE)) ;
         this.plotedSynopsis = c.getString(c.getColumnIndex(MovieColumns.PLOTED_SYNOPSIS));
         this.voteAverage = c.getString(c.getColumnIndex(MovieColumns.VOTE_AVERAGE));
         this.releaseDate = c.getString(c.getColumnIndex(MovieColumns.RELEASE_DATE));
         this.popularity = c.getString(c.getColumnIndex(MovieColumns.POPULARITY));
+        this.favorite = c.getInt(c.getColumnIndex(MovieColumns.FAVORITE)) == 1 ? true : false;
 
     }
 
@@ -103,6 +106,10 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
+    public String getId(){
+        return id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -117,6 +124,19 @@ public class Movie implements Parcelable {
         dest.writeString(voteAverage);
         dest.writeString(releaseDate);
         dest.writeString(popularity);
+        dest.writeInt(favorite == true ? 1 : 0);
 
+    }
+
+    public boolean getFavoriteBooleanStatus(){
+        return favorite;
+    }
+
+    public int getFavoriteIntegerStatus (){
+        return favorite == true ? 1 : 0;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

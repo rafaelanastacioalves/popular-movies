@@ -9,7 +9,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -191,23 +190,43 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 //            );
         }
 
-        Cursor c = getContext().getContentResolver().query(MoviesProvider.Movies.MOVIES_URI,null,null,null,null);
-        if(c !=null ){
-            Log.d(LOG_TAG,"Deleting previous data. All of it");
+        for (int i = 0; i < cVVector.size(); i++) {
+            ContentValues cv = cVVector.get(i);
+            try {
 
-            getContext().getContentResolver().delete(MoviesProvider.Movies.MOVIES_URI,null,null);
+                Log.d(LOG_TAG, "trying to insert a row...");
+                Uri rowNumber = getContext().getContentResolver().insert(MoviesProvider.Movies.MOVIES_URI, cv);
+                Log.d(LOG_TAG, "inserted ok! Count: " + (i+1) );
+
+            }catch (Exception e){
+                Log.e(LOG_TAG, "Insert not possible:" + e.getCause());
+                Log.d(LOG_TAG, "Trying to update");
+                int rows = getContext().getContentResolver().update(MoviesProvider.Movies.withId(Long.valueOf(cv.getAsString(MovieColumns._ID))), cv, MovieColumns._ID + " = " + cv.getAsString(MovieColumns._ID) , null);
+                if (rows > 0){
+                    Log.i(LOG_TAG, "updated successfuly. Count: " + (i+1));
+                }
+            }
+
         }
 
-        Log.d(LOG_TAG,"Inserting the new ones");
-        int inserted = 0;
-        if(cVVector.size()>0){
-            ContentValues[] cvArray = new  ContentValues[cVVector.size()];
-            cVVector.toArray(cvArray);
-            getContext().getContentResolver().bulkInsert(MoviesProvider.Movies.MOVIES_URI, cvArray);
 
+//            Cursor c = getContext().getContentResolver().query(MoviesProvider.Movies.MOVIES_URI,null,null,null,null);
+//        if(c !=null ){
+//            Log.d(LOG_TAG,"Deleting previous data. All of it");
+//
+//            getContext().getContentResolver().delete(MoviesProvider.Movies.MOVIES_URI,null,null);
+//        }
 
-        }
-        c.close();
+//        Log.d(LOG_TAG,"Inserting the new ones");
+//        int inserted = 0;
+//        if(cVVector.size()>0){
+//            ContentValues[] cvArray = new  ContentValues[cVVector.size()];
+//            cVVector.toArray(cvArray);
+//            getContext().getContentResolver().bulkInsert(MoviesProvider.Movies.MOVIES_URI, cvArray);
+//            getContext().getContentResolver().inser
+//
+//        }
+//        c.close();
 }
     public static void initializeSyncAdapter(Context mContext){
         getSyncAccount(mContext);

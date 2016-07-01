@@ -13,7 +13,6 @@ public class MovieDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-
         Fragment detailFragment = new MovieDetailFragment();
         detailFragment.setArguments(getIntent().getExtras());
         Log.d(LOG_TAG, "Calling Detail Fragment");
