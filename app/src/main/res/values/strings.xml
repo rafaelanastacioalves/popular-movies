@@ -21,10 +21,12 @@
     <string-array name="pref_ordering_list_titles">
         <item>Most Popular</item>
         <item>Highly Rated</item>
+        <item>Favorites</item>
     </string-array>
     <string-array name="pref_ordering_list_values">
         <item>@string/popularity_order_title_option</item>
         <item>@string/highly_rated_title_option</item>
+        <item>@string/favorites_title_option</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
@@ -83,4 +85,5 @@
     <string name="content_authority">com.example.rafaelanastacioalves.popularmovies</string>
     <string name="mark_as_favorite">Mark as Favorite</string>
     <string name="movie_detail_favorited">Favorited</string>
+    <string name="favorites_title_option">favorites</string>
 </resources>

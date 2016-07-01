@@ -201,7 +201,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
             }catch (Exception e){
                 Log.e(LOG_TAG, "Insert not possible:" + e.getCause());
                 Log.d(LOG_TAG, "Trying to update");
-                int rows = getContext().getContentResolver().update(MoviesProvider.Movies.withId(Long.valueOf(cv.getAsString(MovieColumns._ID))), cv, MovieColumns._ID + " = " + cv.getAsString(MovieColumns._ID) , null);
+                int rows = getContext().getContentResolver().update(MoviesProvider.Movies.MOVIES_URI, cv, MovieColumns._ID + " = " + cv.getAsString(MovieColumns._ID) , null);
                 if (rows > 0){
                     Log.i(LOG_TAG, "updated successfuly. Count: " + (i+1));
                 }

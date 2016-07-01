@@ -105,7 +105,7 @@ public class MovieDetailFragment extends Fragment {
         ContentValues cv = new ContentValues();
         cv.put(MovieColumns.FAVORITE,aMovie.getFavoriteIntegerStatus());
         Log.i(LOG_TAG,"Making it "+ (aMovie.getFavoriteBooleanStatus()? "":"not") + " favorite and persisting");
-        int rows = getContext().getContentResolver().update(MoviesProvider.Movies.withId(Long.valueOf(aMovie.getId())), cv, MovieColumns._ID + " = " + aMovie.getId(), null);
+        int rows = getContext().getContentResolver().update(MoviesProvider.Movies.MOVIES_URI, cv, MovieColumns._ID + " = " + aMovie.getId(), null);
         Log.i(LOG_TAG, rows + "Values persisted");
 
 

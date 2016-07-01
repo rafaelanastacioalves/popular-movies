@@ -135,8 +135,12 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         }else if(Utility.getSortParam(getActivity()).equals(getString(R.string.popularity_order_title_option))){
             Log.i(LOG_TAG,"Cursor Loader --> Popular");
             return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_POPULAR_URI, null, null,null, null );
+        }else if(Utility.getSortParam(getActivity()).equals(getString(R.string.favorites_title_option))) {
+            Log.i(LOG_TAG, "Cursor Loader --> Favorites");
+            return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_FAVORITES_URI, null, null, null , null);
         }
-        return null;
+
+            return null;
     }
 
     @Override
