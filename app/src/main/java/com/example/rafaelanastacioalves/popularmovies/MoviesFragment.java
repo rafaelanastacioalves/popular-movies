@@ -71,7 +71,6 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sort",Utility.getSortParam(getActivity()));
         super.onSaveInstanceState(outState);
 
     }

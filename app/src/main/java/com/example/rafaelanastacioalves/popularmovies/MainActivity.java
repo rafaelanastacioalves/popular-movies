@@ -2,6 +2,7 @@ package com.example.rafaelanastacioalves.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
         if(savedInstanceState != null && savedInstanceState.containsKey(Constants.EXTRA_SORT)) {
             Log.d(LOG_TAG,"We have sort parameter saved");
             currentSortParam = savedInstanceState.getString(Constants.EXTRA_SORT);
+        }else {
+            Log.d(LOG_TAG,"Instance not saved, retrieving sort param from preferences...");
+            currentSortParam = Utility.getSortParam(this);
         }
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -82,5 +86,12 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putString(Constants.EXTRA_SORT,Utility.getSortParam(this));
+        Log.d(LOG_TAG,"Saving order param...");
 
+        super.onSaveInstanceState(outState, outPersistentState);
+
+    }
 }
