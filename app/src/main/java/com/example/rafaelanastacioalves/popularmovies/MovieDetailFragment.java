@@ -419,18 +419,23 @@ public class MovieDetailFragment extends Fragment {
         @Override
         protected void onPostExecute(Movie movie) {
             ArrayList<String> videosArray = movie.getVideosArray();
-            if(videosArray!= null && !videosArray.isEmpty()){
-                LinearLayout videosContainer = (LinearLayout) rootView.findViewById(R.id.movie_detail_videos_container);
-                for (int i = 0; i < videosArray.size(); i++) {
-                    TextView v = new TextView(getContext());
-                    v.setText(videosArray.get(i));
-                    videosContainer.addView(v);
-
-                }
-            }
+            buildVideosListView(videosArray);
         }
 
 
+    }
+
+    private void buildVideosListView(ArrayList<String> videosArray) {
+        if(videosArray!= null && !videosArray.isEmpty()){
+            LinearLayout videosContainer = (LinearLayout) rootView.findViewById(R.id.movie_detail_videos_container);
+            for (int i = 0; i < videosArray.size(); i++) {
+                LinearLayout videoContent = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.video_content, null);
+                TextView tv = (TextView) videoContent.findViewById(R.id.video_content_text);
+                tv.setText(String.format(getString(R.string.video_number_formatted), (i+1)));
+                videosContainer.addView(videoContent);
+
+            }
+        }
     }
 
 

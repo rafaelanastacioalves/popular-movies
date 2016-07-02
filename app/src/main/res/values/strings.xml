@@ -87,4 +87,5 @@
     <string name="movie_detail_favorited">Favorited</string>
     <string name="favorites_title_option">favorites</string>
     <string name="movie_detail_review_container_title">Reviews:</string>
+    <string name="video_number_formatted">Video %d</string>
 </resources>
