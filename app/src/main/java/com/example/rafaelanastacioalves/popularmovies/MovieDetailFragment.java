@@ -19,6 +19,7 @@ import com.example.rafaelanastacioalves.popularmovies.constants.Constants;
 import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
 import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
+import com.example.rafaelanastacioalves.popularmovies.entities.Review;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ public class MovieDetailFragment extends Fragment {
 
 
     private Movie aMovie;
+    private ArrayList<Review> aReviewList;
     private View rootView;
 
     public MovieDetailFragment() {
@@ -92,7 +94,23 @@ public class MovieDetailFragment extends Fragment {
                 RatingBar aMovieDetailRating = (RatingBar) rootView.findViewById(R.id.movie_detail_rating);
                 aMovieDetailRating.setRating(Float.valueOf(aMovie.getVoteAverage())/2);
 
-                new DownloadAditionalInformation().execute(aMovie);
+            }
+
+
+            if(savedInstanceState != null && savedInstanceState.containsKey(Constants.REVIEWS)){
+                aReviewList = args.getParcelableArrayList(Constants.REVIEWS);
+            }else if(aReviewList==null){
+                    Log.i(LOG_TAG, "No Review List: Retrieving from API ");
+                    new DownloadReviewInformation().execute(aMovie);
+                }
+
+
+
+
+            if(aMovie.getVideosArray()==null || aMovie.getVideosArray().isEmpty()){
+                Log.i(LOG_TAG, "No Video List: Retrieving from API ");
+                new DownloadVideoInformation().execute(aMovie);
+
             }
         }
 
@@ -129,9 +147,160 @@ public class MovieDetailFragment extends Fragment {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(LOG_TAG,"onSaveInstance");
+        outState.putParcelableArrayList(Constants.REVIEWS, aReviewList);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void buildReviewList(ArrayList<Review> reviewArrayList) {
+        Review r;
+        if(reviewArrayList!= null && !reviewArrayList.isEmpty()){
+            LinearLayout reviewContainer = (LinearLayout) rootView.findViewById(R.id.movie_detail_reviews_container);
+            for (int i = 0; i < reviewArrayList.size(); i++) {
+                if (getContext() !=null && getContext().getResources()!=null){
+                    TextView v = new TextView(getContext());
+                    r = reviewArrayList.get(i);
+                    v.setText("Author: " + r.getAuthor() + "\n" +
+                            "Review: " + r.getContent());
+                    reviewContainer.addView(v);
+                }
 
 
-    private class DownloadAditionalInformation extends AsyncTask<Movie,Void,Movie> {
+            }
+        }
+    }
+
+    private class DownloadReviewInformation extends AsyncTask<Movie,Void,ArrayList<Review>> {
+        private String LOG_TAG = this.getClass().getSimpleName();
+        private final String MOVIEDB_BASE_URL =
+                "https://api.themoviedb.org/3/movie";
+
+        private Movie iMovie;
+        private ArrayList<Review> iReviewList;
+
+        @Override
+        protected ArrayList<Review> doInBackground(Movie... movies) {
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            // Will contain the raw JSON response as a string.
+            String moviesJsonStr = null;
+
+            iReviewList= new ArrayList<Review>();
+
+            iMovie = movies[0];
+            try {
+
+                final String APPID_KEY = "api_key";
+                final String ORDERING_PARAM = "sort_by";
+                final String REVIEWS_PATH_SEGMENT = "reviews";
+
+                Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                        .appendPath(iMovie.getId())
+                        .appendPath(REVIEWS_PATH_SEGMENT)
+                        .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                Log.d(LOG_TAG,"Accessing url: "+ url.toString() );
+                // Create the request to MovieDB, and open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return iReviewList;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return iReviewList;
+                }
+                moviesJsonStr = buffer.toString();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error ", e);
+                // If the code didn't successfully get the weather data, there's no point in attemping
+                // to parse it.
+                return iReviewList;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_TAG, "Error closing stream", e);
+                    }
+                }
+            }
+
+            try {
+                getMoviesDataFromJson(moviesJsonStr);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+            return iReviewList;
+        }
+
+        private void getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
+            Log.d(LOG_TAG,"Parsing Movies JSON");
+
+
+            String MDBM_RESULTS = "results";
+            String MDBM_NAME = "author";
+            String MDBM_CONTENT = "content";
+
+
+
+
+
+            String movie_id;
+
+
+            JSONObject moviesObject = new JSONObject(moviesJsonStr);
+            JSONArray reviewsJSONArray = moviesObject.getJSONArray(MDBM_RESULTS);
+
+
+            for (int i = 0; i < reviewsJSONArray.length(); i++) {
+                 Review r = new Review(
+                         reviewsJSONArray.getJSONObject(i).getString(MDBM_NAME),
+                         reviewsJSONArray.getJSONObject(i).getString(MDBM_CONTENT)
+                 );
+
+                iReviewList.add(r);
+
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Review> reviewArrayList) {
+            aReviewList = reviewArrayList;
+            buildReviewList(aReviewList);
+        }
+    }
+
+
+    private class DownloadVideoInformation extends AsyncTask<Movie,Void,Movie> {
         private String LOG_TAG = this.getClass().getSimpleName();
         private final String MOVIEDB_BASE_URL =
                 "https://api.themoviedb.org/3/movie";
@@ -260,8 +429,9 @@ public class MovieDetailFragment extends Fragment {
                 }
             }
         }
-    }
 
+
+    }
 
 
 }
