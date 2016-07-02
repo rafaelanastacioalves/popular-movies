@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
 
+import java.util.ArrayList;
+
 /**
  * Created by rafael.alves on 07/06/16.
  */
@@ -19,6 +21,7 @@ public class Movie implements Parcelable {
     private String releaseDate;
     private String popularity;
     private boolean favorite;
+    private ArrayList<String> videosArray;
 
 
     public Movie (String id, String posterPath){
@@ -39,6 +42,7 @@ public class Movie implements Parcelable {
         releaseDate = in.readString();
         popularity = in.readString();
         favorite = in.readInt() == 1 ? true : false;
+        videosArray = in.createStringArrayList();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -125,6 +129,7 @@ public class Movie implements Parcelable {
         dest.writeString(releaseDate);
         dest.writeString(popularity);
         dest.writeInt(favorite == true ? 1 : 0);
+        dest.writeStringList(videosArray);
 
     }
 
@@ -138,5 +143,13 @@ public class Movie implements Parcelable {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public void setVideosArray(ArrayList<String> videosArray) {
+        this.videosArray = videosArray;
+    }
+
+    public ArrayList<String> getVideosArray(){
+        return videosArray;
     }
 }

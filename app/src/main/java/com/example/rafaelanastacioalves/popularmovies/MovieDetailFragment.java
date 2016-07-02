@@ -1,6 +1,8 @@
 package com.example.rafaelanastacioalves.popularmovies;
 
 import android.content.ContentValues;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -17,6 +20,18 @@ import com.example.rafaelanastacioalves.popularmovies.data.MovieColumns;
 import com.example.rafaelanastacioalves.popularmovies.data.MoviesProvider;
 import com.example.rafaelanastacioalves.popularmovies.entities.Movie;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -30,6 +45,7 @@ public class MovieDetailFragment extends Fragment {
 
 
     private Movie aMovie;
+    private View rootView;
 
     public MovieDetailFragment() {
     }
@@ -37,7 +53,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.movie_detail_content, container, false);
+        rootView = inflater.inflate(R.layout.movie_detail_content, container, false);
         Log.d(TAG_NAME,"retrieving EXTRAS");
 
 
@@ -76,7 +92,7 @@ public class MovieDetailFragment extends Fragment {
                 RatingBar aMovieDetailRating = (RatingBar) rootView.findViewById(R.id.movie_detail_rating);
                 aMovieDetailRating.setRating(Float.valueOf(aMovie.getVoteAverage())/2);
 
-
+                new DownloadAditionalInformation().execute(aMovie);
             }
         }
 
@@ -109,15 +125,146 @@ public class MovieDetailFragment extends Fragment {
         Log.i(LOG_TAG, rows + "Values persisted");
 
 
-
-
         //Have to create a URI referencing the ID of the movie and set it to the value we want. Update value...
 
     }
 
 
 
+    private class DownloadAditionalInformation extends AsyncTask<Movie,Void,Movie> {
+        private String LOG_TAG = this.getClass().getSimpleName();
+        private final String MOVIEDB_BASE_URL =
+                "https://api.themoviedb.org/3/movie";
+
+        private Movie iMovie;
+
+        @Override
+        protected Movie doInBackground(Movie... movies) {
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            // Will contain the raw JSON response as a string.
+            String moviesJsonStr = null;
+
+            iMovie = movies[0];
+            try {
+
+                final String APPID_KEY = "api_key";
+                final String ORDERING_PARAM = "sort_by";
+                final String VIDEOS_PATH_SEGMENT = "videos";
+
+                Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                        .appendPath(iMovie.getId())
+                        .appendPath(VIDEOS_PATH_SEGMENT)
+                        .appendQueryParameter(APPID_KEY, BuildConfig.MOVIE_DB_API_KEY)
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                Log.d(LOG_TAG,"Accessing url: "+ url.toString() );
+                // Create the request to MovieDB, and open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return iMovie;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return iMovie;
+                }
+                moviesJsonStr = buffer.toString();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error ", e);
+                // If the code didn't successfully get the weather data, there's no point in attemping
+                // to parse it.
+                return iMovie;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_TAG, "Error closing stream", e);
+                    }
+                }
+            }
+
+            try {
+                getMoviesDataFromJson(moviesJsonStr);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+            return iMovie;
+        }
+
+        private void getMoviesDataFromJson(String moviesJsonStr) throws JSONException {
+            Log.d(LOG_TAG,"Parsing Movies JSON");
+
+
+            String MDBM_RESULTS = "results";
+            String MDBM_KEY = "key";
+
+
+
+
+            String movie_id;
+
+
+            JSONObject moviesObject = new JSONObject(moviesJsonStr);
+            JSONArray videoListArray = moviesObject.getJSONArray(MDBM_RESULTS);
+
+            ArrayList<String> videosArray = new ArrayList<String>();
+
+            for (int i = 0; i < videoListArray.length(); i++) {
+                ContentValues movieValues = new ContentValues();
+
+                videosArray.add(videoListArray.getJSONObject(i).getString(MDBM_KEY));
+
+
+            }
+
+            aMovie.setVideosArray(videosArray);
+
+
+        }
+
+        @Override
+        protected void onPostExecute(Movie movie) {
+            ArrayList<String> videosArray = movie.getVideosArray();
+            if(videosArray!= null && !videosArray.isEmpty()){
+                LinearLayout videosContainer = (LinearLayout) rootView.findViewById(R.id.movie_detail_videos_container);
+                for (int i = 0; i < videosArray.size(); i++) {
+                    TextView v = new TextView(getContext());
+                    v.setText(videosArray.get(i));
+                    videosContainer.addView(v);
+
+                }
+            }
+        }
+    }
+
 
 
 }
+
+
 
