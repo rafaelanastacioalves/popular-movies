@@ -1,6 +1,7 @@
 package com.example.rafaelanastacioalves.popularmovies;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -432,6 +433,15 @@ public class MovieDetailFragment extends Fragment {
                 LinearLayout videoContent = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.video_content, null);
                 TextView tv = (TextView) videoContent.findViewById(R.id.video_content_text);
                 tv.setText(String.format(getString(R.string.video_number_formatted), (i+1)));
+                videoContent.setTag(videosArray.get(i));
+                videoContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String key = (String) v.getTag();
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v="+key)));
+
+                    }
+                });
                 videosContainer.addView(videoContent);
 
             }
