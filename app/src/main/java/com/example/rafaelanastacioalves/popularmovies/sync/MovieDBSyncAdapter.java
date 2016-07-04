@@ -67,6 +67,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
 
             final String APPID_KEY = "api_key";
+            //noinspection UnusedAssignment
             final String ORDERING_PARAM = "sort_by";
 
             Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
@@ -145,7 +146,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
         String MDBM_RELEASE_DATE = "release_date";
 
 
-
+        //noinspection UnusedAssignment
         String movie_id;
 
 
@@ -154,6 +155,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
 
         Vector<ContentValues> cVVector = new Vector<ContentValues>(moviesListArray.length());
 
+        //noinspection UnusedAssignment
         Movie aMovieTemp;
         for (int i = 0; i < moviesListArray.length(); i++) {
             ContentValues movieValues = new ContentValues();
@@ -195,6 +197,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
             try {
 
                 Log.d(LOG_TAG, "trying to insert a row...");
+                //noinspection UnusedAssignment
                 Uri rowNumber = getContext().getContentResolver().insert(MoviesProvider.Movies.MOVIES_URI, cv);
                 Log.d(LOG_TAG, "inserted ok! Count: " + (i+1) );
 

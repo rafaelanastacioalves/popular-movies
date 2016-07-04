@@ -41,7 +41,7 @@ public class Movie implements Parcelable {
         voteAverage = in.readString();
         releaseDate = in.readString();
         popularity = in.readString();
-        favorite = in.readInt() == 1 ? true : false;
+        favorite = (in.readInt() == 1 ? true : false);
         videosArray = in.createStringArrayList();
     }
 

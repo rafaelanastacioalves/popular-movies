@@ -7,6 +7,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_weight="0.3"
+        android:contentDescription="@string/movie_detail_movie_trailer_content_description"
         android:src="@mipmap/player_play"
         android:layout_height="wrap_content" />
     <TextView

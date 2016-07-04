@@ -41,20 +41,6 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-
-
-
-
-
-    }
-
-
-
     public void updateMoviesDatabase() {
         Log.i(LOG_TAG, "Updating database");
         MovieDBSyncAdapter.syncImmediatly(getActivity());
@@ -174,7 +160,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     public interface  CallBack {
-        public void onItemSelected(Movie aMovie);
+        void onItemSelected(Movie aMovie);
     }
 }
 
