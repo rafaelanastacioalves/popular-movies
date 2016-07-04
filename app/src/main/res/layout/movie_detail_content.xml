@@ -6,7 +6,9 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/movie_detail_original_title"
         android:layout_width="match_parent"
-        android:layout_height="160sp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Display3"
@@ -27,23 +29,47 @@
         tools:context="com.example.rafaelanastacioalves.popularmovies.MovieDetailFragment"
         tools:showIn="@layout/activity_movie_detail">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/movie_detail_image_view"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/movie_image_content_descrition" />
 
-        <ImageView
-            android:id="@+id/movie_detail_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/movie_image_content_descrition" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <TextView
+                    android:id="@+id/movie_detail_release_date"
+                    android:layout_width="match_parent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/movie_detail_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setFavorite"
+                    android:text="@string/mark_as_favorite" />
 
-        <Button
-            android:id="@+id/movie_detail_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="setFavorite"
-            android:text="@string/mark_as_favorite" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
 
 
         <TextView
             android:id="@+id/movie_detail_synopsis"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -55,16 +81,23 @@
             android:numStars="5"
             android:stepSize="1.0" />
 
-        <TextView
-            android:id="@+id/movie_detail_release_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
+        <include layout="@layout/divider"/>
         <LinearLayout
             android:id="@+id/movie_detail_videos_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:text="@string/movie_detail_trailer_header"/>
+
+        </LinearLayout>
+        <include layout="@layout/divider" />
 
         <LinearLayout
             android:id="@+id/movie_detail_reviews_container"
@@ -75,6 +108,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+
                 android:text="@string/movie_detail_review_container_title" />
         </LinearLayout>
 
