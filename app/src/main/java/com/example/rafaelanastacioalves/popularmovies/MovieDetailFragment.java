@@ -99,7 +99,9 @@ public class MovieDetailFragment extends Fragment {
 
 
             if(savedInstanceState != null && savedInstanceState.containsKey(Constants.REVIEWS)){
-                aReviewList = args.getParcelableArrayList(Constants.REVIEWS);
+                Log.i(LOG_TAG, "We already have a reviewList ");
+                aReviewList = savedInstanceState.getParcelableArrayList(Constants.REVIEWS);
+                buildReviewList(aReviewList);
             }else if(aReviewList==null){
                     Log.i(LOG_TAG, "No Review List: Retrieving from API ");
                     new DownloadReviewInformation().execute(aMovie);
@@ -111,7 +113,10 @@ public class MovieDetailFragment extends Fragment {
             if(aMovie.getVideosArray()==null || aMovie.getVideosArray().isEmpty()){
                 Log.i(LOG_TAG, "No Video List: Retrieving from API ");
                 new DownloadVideoInformation().execute(aMovie);
+            }else {
+                Log.i(LOG_TAG, "We already have videoList... ");
 
+                buildVideosListView(aMovie.getVideosArray());
             }
         }
 
