@@ -15,4 +15,5 @@ public class Constants {
     public static final int MOVIES_LOADER = 0;
 
 
+    public static  String MOVIE_LIST_POSITION;
 }
