@@ -29,8 +29,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     private final String LOG_TAG = this.getClass().getSimpleName();
     private GridView aGridView;
 
-    //TODO manage the usage:
-    private int mPosition;
+    private int mPosition = -1;
 
 
     /**
@@ -44,6 +43,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
 
@@ -56,6 +56,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     public void updateMoviesDatabase() {
+        Log.i(LOG_TAG, "Updating database");
         MovieDBSyncAdapter.syncImmediatly(getActivity());
         getLoaderManager().restartLoader(Constants.MOVIES_LOADER,null,this);
     }
@@ -71,6 +72,10 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
+        mPosition = aGridView.getFirstVisiblePosition();
+
+        outState.putInt(Constants.MOVIE_LIST_POSITION,mPosition);
         super.onSaveInstanceState(outState);
 
     }
@@ -79,6 +84,14 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
+
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.MOVIE_LIST_POSITION)){
+            Log.i(LOG_TAG, "Position of list retrieved");
+            mPosition = savedInstanceState.getInt(Constants.MOVIE_LIST_POSITION);
+        }
+
+
 
         adapter = new CustomMoviesListAdapter(getActivity(), null, 0);
         aGridView = (GridView) view.findViewById(R.id.movie_list_grid_view);
@@ -91,6 +104,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
                 Cursor c = (Cursor) adapterView.getItemAtPosition(position);
                 Movie aMovie = new Movie(c);
+                mPosition = position;
                 ((CallBack)getActivity()).onItemSelected(aMovie);
 
 
@@ -129,14 +143,14 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         Log.i(LOG_TAG, "onCreateLoader");
 
         if(Utility.getSortParam(getActivity()).equals(getString(R.string.highly_rated_title_option))){
-            Log.i(LOG_TAG,"Cursor Loader --> Top Rated");
+            Log.i(LOG_TAG,"Creating Cursor Loader --> Top Rated");
             return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_TOP_RATED_URI, null, null,null, null );
 
         }else if(Utility.getSortParam(getActivity()).equals(getString(R.string.popularity_order_title_option))){
-            Log.i(LOG_TAG,"Cursor Loader --> Popular");
+            Log.i(LOG_TAG,"Creating Cursor Loader --> Popular");
             return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_POPULAR_URI, null, null,null, null );
         }else if(Utility.getSortParam(getActivity()).equals(getString(R.string.favorites_title_option))) {
-            Log.i(LOG_TAG, "Cursor Loader --> Favorites");
+            Log.i(LOG_TAG, "Creating Cursor Loader --> Favorites");
             return new CursorLoader(getActivity(), MoviesProvider.Movies.MOVIES_FAVORITES_URI, null, null, null , null);
         }
 

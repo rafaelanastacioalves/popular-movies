@@ -79,7 +79,7 @@ public class CustomMoviesListAdapter extends CursorAdapter {
 
         ViewHolder holder = (ViewHolder) view.getTag();
 
-        Picasso.with(context.getApplicationContext()).load(cursor.getString(cursor.getColumnIndex(PROJETION[CustomMoviesListAdapter.POSTER_PATH_COL]))).into(holder.iconView);
+        Picasso.with(context.getApplicationContext()).load(cursor.getString(cursor.getColumnIndex(PROJETION[CustomMoviesListAdapter.POSTER_PATH_COL]))).placeholder(R.mipmap.movie_poster_placeholder).into(holder.iconView);
 
 
 
