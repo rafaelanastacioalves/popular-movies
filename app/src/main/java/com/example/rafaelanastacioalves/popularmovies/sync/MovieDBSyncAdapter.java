@@ -46,7 +46,7 @@ public class MovieDBSyncAdapter extends AbstractThreadedSyncAdapter {
     private final String IMAGETMDB_BASE_URL =
             "http://image.tmdb.org/t/p/";
 
-    private final String image_size_default = "w342";
+    private final String image_size_default = "w600";
 
 
     public MovieDBSyncAdapter(Context context, boolean autoInitialize) {
