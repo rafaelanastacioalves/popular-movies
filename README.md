@@ -9,6 +9,6 @@ App that list movies and show their details. Info fetched from https://www.themo
 ## building
 
 Build normally using Gradle.
-Please create the following string on gradle.properties:
+Please create the following string on ```gradle.properties```:
 
 MyMovieDBApiKey="[YOUR_API_KEY]"
