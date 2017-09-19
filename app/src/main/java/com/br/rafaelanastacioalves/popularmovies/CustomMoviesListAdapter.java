@@ -82,7 +82,7 @@ public class CustomMoviesListAdapter extends CursorAdapter {
         Picasso.with(context.getApplicationContext())
                 .load(cursor.getString(cursor.getColumnIndex(PROJETION[CustomMoviesListAdapter.POSTER_PATH_COL])))
                 .placeholder(R.mipmap.movie_poster_placeholder)
-                .resize(1000,1000)
+                .resize(500,500)
                 .centerCrop()
                 .into(holder.iconView);
 
