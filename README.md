@@ -15,4 +15,4 @@ MyMovieDBApiKey="[YOUR_API_KEY]"
 
 ## Download
 
-If you prefer, you can download it in the ![Play Store](http://play.google.com/store/apps/details?id=com.br.rafaelanastacioalves.popularmovies&rdid=com.br.rafaelanastacioalves.popularmovies)
+If you prefer, you can download it in the [Play Store](https://play.google.com/store/apps/details?id=com.br.rafaelanastacioalves.popularmovies&rdid=com.br.rafaelanastacioalves.popularmovies)
